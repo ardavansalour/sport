@@ -1,0 +1,4 @@
+requests
+djangorestframework
+django_login_history
+django-cors-headers

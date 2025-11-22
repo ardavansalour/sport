@@ -1,0 +1,1225 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}فرزندان و نوادگان شاهزاده عبدالصمد میرزا عزالدوله{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover"/>
+      <!-- <meta name="description" content="فرزندان و نوادگان شاهزاده عبدالصمد میرزا عزالدوله"/> -->
+      <!-- <meta name="keywords" content="شاهزاده عبدالصمد میرزا عزالدوله, عزالدوله, قاجار، شجره نامه، سالور"/> -->
+      <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
+      <link rel="stylesheet" type="text/css" href="{% static 'css/combobox.css' %}"/>
+      <link rel="stylesheet" type="text/css" href="{% static 'css/tooltip.css' %}"/>
+      <!-- Copyright 1998-2021 by Northwoods Software Corporation. -->
+      <title>فرزندان و نوادگان شاهزاده عبدالصمد میرزا عزالدوله</title>
+      <style>
+         ul {
+         list-style-type: none;
+         margin: 0;
+         padding: 0;
+         overflow: hidden;
+         background-color: 61163231;
+         }
+         li {
+         float: right;
+         }
+         li a {
+         display: block;
+         color: white;
+         text-align: center;
+         padding: 6px 6px;
+         text-decoration: none;
+         font-family: "Tahoma";
+         font-size: 1em
+         }
+         li a:hover:not(.active) {
+         background-color: #317399;
+         }
+         .active {
+         background-color: #317399;
+         }
+      </style>
+      <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js"></script> 
+   </head>
+   <body>
+      <!-- This top nav is not part of the sample code -->
+      <nav id="navTop" class="w-full z-20 top-0 text-white bg-nwoods-primary">
+         <div align="center" class="flex-wrap sm:flex-nowrap items-center justify-between mt-0 py-2">
+            <div align="center" class="md:pl-4">
+               <h1 style="font-size:28px; color:#EFE4B0">فرزندان و نوادگان شاهزاده عبدالصمد میرزا عزالدوله</h1>
+               !خوش آمدید {{ user.username }}
+               <ul>
+                  <li title="نسخه انگلیسی"><a href="../tree_en">English</a></li>
+                  <li title="نسخه قابل حرکت روی نسل‌ها"><a href="../tree_exp">Expandable</a></li>
+                  <li title="در صورتی که اطلاعات شما ثبت نشده، اینجا را کلیک کنید"><a href="https://docs.google.com/forms/d/e/1FAIpQLSe8OKf-9SOsPUbWj6fBr-ciUYh1QNOup8T7RMxQXXkzRs4IHA/viewform" target="_blank">ورود اطلاعات</a></li>
+                  <li><a href="../help_fa" target="_blank">راهنما</a></li>
+                  <li><a onclick="copyToClipboard()" href="mailto:shajareh.ezzedoleh@gmail">ارسال ایمیل</a></li>
+                  <li><a href="../familytree/logout/">خروج</a></li>
+               </ul>
+            </div>
+            </button>
+         </div>
+      </nav>
+      <!-- * * * * * * * * * * * * * -->
+      <!-- Start of GoJS sample code -->
+      <script src="{% static 'css/go.js' %}"></script>
+      <script id="code">
+         function downloadURI(uri, name) {
+         var link = document.createElement('a');
+         link.download = name;
+         link.href = uri;
+         document.body.appendChild(link);
+         link.click();
+         document.body.removeChild(link);
+         delete link;
+         }
+         
+         async function delay() {
+          console.log('start timer');
+          await new Promise(resolve => setTimeout(resolve, 2000));
+          console.log('after 2 seconds');
+         }
+         
+         async function runScreenshot(){
+         
+          var a = document.getElementById('myDiagramDiv');
+          a.style.width ='3200px';
+          a.style.height = '5900px';
+         
+          await delay();
+         
+          html2canvas(document.getElementById('myDiagramDiv')).then(function(canvas) {
+          var dataURL = canvas.toDataURL({ pixelRatio: 3 });
+          var currentdate = new Date(); 
+          var datetime = "familytree_fa_" + currentdate.getFullYear() + "_"
+                        + (currentdate.getMonth()+1)  + "_" 
+                        + currentdate.getDate() + "_"  
+                        + currentdate.getHours() + "_"  
+                        + currentdate.getMinutes() + "_" 
+                        + currentdate.getSeconds();
+          filename = datetime + '.png';
+          downloadURI(dataURL, filename);
+
+          //location.reload();
+         
+         /*
+         const base64image = canvas.toDataURL("image/jpeg", 1);
+         console.log(base64image)
+         
+         
+         var image = new Image();
+         image.src = base64image;					
+         //document.body.appendChild(image);
+         
+         var w = window.open("");
+         w.document.write(image.outerHTML);*/
+         });
+         }
+		 
+		 async function screenshot(){
+         
+            sessionStorage.setItem("reloading", "true");
+			document.location.reload();
+         }
+         
+         function copyToClipboard() {
+         /* Copy the text inside the text field */
+         navigator.clipboard.writeText("shajareh.ezzedoleh@gmail");
+         //alert("آدرس ایمیل در کلیپ بورد کپی شد. میتوانید پِیست کنید");
+         }
+         function init() {
+         var $ = go.GraphObject.make;  // for conciseness in defining templates
+         
+         myDiagram =
+         $(go.Diagram, "myDiagramDiv",  // must be the ID or reference to div
+         {
+         "toolManager.hoverDelay": 100,  // 100 milliseconds instead of the default 850
+         allowCopy: false,
+         layout:  // create a TreeLayout for the family tree
+         $(go.TreeLayout,
+         { angle: 0, nodeSpacing: 30, layerSpacing: 50, layerStyle: go.TreeLayout.LayerUniform })
+         });
+         
+         var bluegrad = '#90CAF9';
+         var pinkgrad = '#F48FB1';
+         var lightbluegrad = '#CEF8F8';
+         var lightpinkgrad = '#FFBC79';
+         
+         // get tooltip text from the object's data
+         function tooltipTextConverter(person) {
+         var str = person.name + "\n";
+         if (person.birthYear !== undefined && person.birthYear !== '') str += "\nتاریخ تولد: " + person.birthYear;
+         if (person.deathYear !== undefined && person.deathYear !== '') str += "\nتاریخ درگذشت: " + person.deathYear;
+         if (person.reign !== undefined && person.reign !== '') str += "\nReign: " + person.reign;
+         if (person.mother !== undefined && person.mother !== '') str += "\nمادر: " + person.mother;
+         if (person.father !== undefined && person.father !== '') str += "\nپدر: " + person.father;
+         return str;
+         }
+         
+         // define tooltips for nodes
+         var tooltiptemplate =
+         $("ToolTip",
+         { "Border.fill": "whitesmoke", "Border.stroke": "black" },
+         $(go.TextBlock,
+         {
+         font: "bold 8pt Tahoma",
+         wrap: go.TextBlock.WrapFit,
+         margin: 5
+         },
+         new go.Binding("text", "", tooltipTextConverter))
+         );
+         
+         // define Converters to be used for Bindings
+         function genderBrushConverter(gender) {
+         if (gender === "M") return bluegrad;
+         if (gender === "F") return pinkgrad;
+         if (gender === "MM") return lightbluegrad;
+         if (gender === "FF") return lightpinkgrad;
+         return "orange";
+         }
+         
+         // replace the default Node template in the nodeTemplateMap
+         myDiagram.nodeTemplate =
+         $(go.Node, "Auto",
+         { deletable: false, isTreeExpanded: true, toolTip: tooltiptemplate },
+         new go.Binding("text", "name"),
+         $(go.Shape, "Rectangle",
+         {
+         fill: "lightgray",
+         stroke: null, strokeWidth: 0,
+         stretch: go.GraphObject.Fill,
+         alignment: go.Spot.Center
+         },
+         new go.Binding("fill", "gender", genderBrushConverter)),
+         $(go.TextBlock,
+         {
+         font: "550 28px Tahoma",
+         textAlign: "left",
+         margin: 6, maxSize: new go.Size(NaN, NaN)
+         },
+         new go.Binding("text", "name")),
+         {
+         selectionAdornmentTemplate:
+         $(go.Adornment, "Auto",
+         $(go.Shape,
+         { fill: null, stroke: "red", strokeWidth: 6 },
+         new go.Binding("stroke", "color")),
+         $(go.Placeholder)
+         )  // end Adornment
+         }
+         );
+         
+         // define the Link template
+         myDiagram.linkTemplate =
+         $(go.Link,  // the whole link panel
+         { routing: go.Link.Orthogonal, corner: 5, selectable: false },
+         $(go.Shape, { strokeWidth: 3, stroke: '#424242' }));  // the gray link shape
+         
+         // here's the family data
+         var nodeDataArray = [
+		 { key: -2146, parent: 71, name: "فرخ اردلان", "gender": "M", birthYear: "1336/06/08", deathYear: "", mother: "مهوش امیرشاهی", father: "ابوالفتح اردلان 1386/06/09-1308/07/29"},
+{ key: -2171, parent: 71, name: "بابک اردلان", "gender": "M", birthYear: "1341", deathYear: "", mother: "مهوش امیرشاهی", father: "ابوالفتح اردلان 1386/06/09-1308/07/29"},
+{ key: -2179, parent: 71, name: "روشنک اردلان", "gender": "F", birthYear: "1343", deathYear: "", mother: "مهوش امیرشاهی", father: "ابوالفتح اردلان 1386/06/09-1308/07/29"},
+{ key: -2272, parent: -2179, name: "کامران علوی", "gender": "M", birthYear: "1372", deathYear: "", mother: "روشنک اردلان", father: "حمید علوی"},
+{ key: -2276, parent: -2179, name: "کیان اردلان علوی", "gender": "M", birthYear: "1374", deathYear: "", mother: "روشنک اردلان", father: "حمید علوی"},
+{ key: -2280, parent: -2146, name: "امان اردلان", "gender": "M", birthYear: "1375/03/17", deathYear: "", mother: "ایران اردلان", father: "فرخ اردلان"},
+{ key: -2284, parent: -2171, name: "لیلی اردلان", "gender": "F", birthYear: "1377", deathYear: "", mother: "شادی سابتیان", father: "بابک اردلان"},
+{ key: -2285, parent: -2146, name: "امیر اردلان", "gender": "M", birthYear: "1377/07/29", deathYear: "", mother: "ایران اردلان", father: "فرخ اردلان"},
+{ key: -2291, parent: -2171, name: "نینا اردلان", "gender": "F", birthYear: "1382", deathYear: "", mother: "شادی سابتیان", father: "بابک اردلان"},
+
+         
+         
+{ key: 1000473, parent: 100047, name: "آذر سیادت", "gender": "FF", birthYear: "", deathYear: "", mother: "ابتهاج الملوک اردلان 1371-1285", father: ""},
+{ key: 1000163, parent: 1000110, name: "آذر شاهزاده نصیرالدوله", "gender": "FF", birthYear: "", deathYear: "", mother: "تاجماه خانم", father: "عبدالصمد میرزا عزالدوله 1308-1222"},
+{ key: 10003703, parent: 10003701, name: "آراسته ریحانی", "gender": "FF", birthYear: "", deathYear: "", mother: "مارگاریتا", father: "سینا ریحانی"},
+{ key: 10003704, parent: 10003703, name: "آریتز مولر ریحانی", "gender": "MM", birthYear: "", deathYear: "", mother: "آراسته ریحانی", father: ""},
+{ key: 10001634, parent: 1000163, name: "ابوالقاسم بدر", "gender": "MM", birthYear: "", deathYear: "", mother: "آذر شاهزاده نصیرالدوله", father: "میرزا احمدخان بدر نصیرالدوله"},
+{ key: 10004303, parent: 23, name: "احمد سالور", "gender": "MM", birthYear: "", deathYear: "", mother: "", father: "سلطان یوسف سالور 1353-1296"},
+{ key: 10001613, parent: 1000161, name: "اسدالله سالور", "gender": "MM", birthYear: "", deathYear: "", mother: "نفیسه شاهزاده خانم 1307-1243", father: "محمدحسن میرزا امیرزاده"},
+{ key: 10001615, parent: 1000161, name: "افسرالملوک سالور", "gender": "FF", birthYear: "", deathYear: "", mother: "نفیسه شاهزاده خانم 1307-1243", father: "محمدحسن میرزا امیرزاده"},
+{ key: 10002902, parent: 11, name: "اقدس گنجه ای", "gender": "FF", birthYear: "", deathYear: "", mother: "حورالعین قمرالدوله 1362-1275", father: "عبدالوهاب گنجه ای"},
+{ key: 10004800, parent: 168, name: "امیرروزبه فرهنگ", "gender": "MM", birthYear: "", deathYear: "", mother: "کتایون کوزه کنانی", father: ""},
+{ key: 10004801, parent: 168, name: "امیرعلی فرهنگ", "gender": "MM", birthYear: "", deathYear: "", mother: "کتایون کوزه کنانی", father: ""},
+{ key: 10004501, parent: 1000450, name: "انوشیروان سالور", "gender": "MM", birthYear: "", deathYear: "", mother: "", father: "فیروز سالور 1370-"},
+{ key: 1000150, parent: 1000110, name: "انوشیروان میرزا", "gender": "MM", birthYear: "", deathYear: "", mother: "شهربانو خانم", father: "عبدالصمد میرزا عزالدوله 1308-1222"},
+{ key: 10009000, parent: 10008000, name: "بابک ربوبی", "gender": "MM", birthYear: "", deathYear: "", mother: "ناصره اردلان", father: "اکبر ربوبی"},
+{ key: 10004002, parent: 10004001, name: "بردیا سالور", "gender": "MM", birthYear: "", deathYear: "", mother: "", father: "شاه محمد سالور"},
+{ key: 10004305, parent: 10004303, name: "بهرام سالور", "gender": "MM", birthYear: "", deathYear: "", mother: "", father: "احمد سالور"},
+{ key: 100010002, parent: 100010000, name: "پاتریک", "gender": "MM", birthYear: "", deathYear: "", mother: "ندا ربوبی", father: ""},
+{ key: 10004008, parent: 1000400, name: "پرویز سالور", "gender": "MM", birthYear: "", deathYear: "", mother: "", father: "سلطان محمود سالور"},
+{ key: 10004708, parent: 10001615, name: "پروین کاظمی", "gender": "FF", birthYear: "", deathYear: "", mother: "افسرالملوک سالور", father: ""},
+{ key: 10001647, parent: 1000164, name: "پری چهر امیرشاهی", "gender": "FF", birthYear: "", deathYear: "", mother: "ماهوش نواب عالیه", father: "محمد علی رفعت السلطان امیرشاهی"},
+{ key: 10001629, parent: 10001623, name: "پریناز اردلان", "gender": "FF", birthYear: "", deathYear: "1357/11/07", mother: "ملک تاج خواجه نوری", father: "ناصر قلی اردلان 1357/01/24-"},
+{ key: 1000472, parent: 100047, name: "پوران سیادت", "gender": "FF", birthYear: "", deathYear: "", mother: "ابتهاج الملوک اردلان 1371-1285", father: ""},
+{ key: 10004502, parent: 1000450, name: "تاتیانا سالور", "gender": "FF", birthYear: "", deathYear: "", mother: "", father: "فیروز سالور 1370-"},
+{ key: 10009002, parent: 10009000, name: "تام ربوبی", "gender": "MM", birthYear: "", deathYear: "", mother: "مرجان", father: "بابک ربوبی"},
+{ key: 10004709, parent: 10001615, name: "توری کاظمی", "gender": "FF", birthYear: "", deathYear: "", mother: "افسرالملوک سالور", father: ""},
+{ key: 10004007, parent: 1000400, name: "ثریا سالور", "gender": "FF", birthYear: "", deathYear: "", mother: "", father: "سلطان محمود سالور"},
+{ key: 1000166, parent: 1000110, name: "جانجان سالور", "gender": "FF", birthYear: "", deathYear: "1370", mother: "شوکت خانم", father: "عبدالصمد میرزا عزالدوله 1308-1222"},
+{ key: 10003702, parent: 1000370, name: "جمشید منتظم کیا", "gender": "MM", birthYear: "", deathYear: "", mother: "عزت ملک 1367/05/10-", father: ""},
+{ key: 10004710, parent: 10001615, name: "جواد کاظمی", "gender": "MM", birthYear: "", deathYear: "", mother: "افسرالملوک سالور", father: ""},
+{ key: 10000, parent: 0, name: "حسین خان زیاد اوغلی قاجار", "gender": "MM", birthYear: "", deathYear: "", mother: "", father: ""},
+{ key: 10001651, parent: 1000165, name: "حسین خواجه نوری", "gender": "MM", birthYear: "", deathYear: "", mother: "عزیزه شاهزاده افخم الملک", father: ""},
+{ key: 100011009, parent: 10001626, name: "حسینعلی اعتضادی", "gender": "MM", birthYear: "", deathYear: "", mother: "عزالملوک اردلان", father: "سالار اعتضادی"},
+{ key: 1000170, parent: 4, name: "حمید سلطان", "gender": "MM", birthYear: "", deathYear: "", mother: "", father: "حسینقلی میرزا عمادالسلطنه 1311-1247"},
+{ key: 10004304, parent: 10004303, name: "دارا سالور", "gender": "MM", birthYear: "", deathYear: "", mother: "", father: "احمد سالور"},
+{ key: 10004711, parent: 10001615, name: "داود کاظمی", "gender": "MM", birthYear: "", deathYear: "", mother: "افسرالملوک سالور", father: ""},
+{ key: 10009001, parent: 10009000, name: "رائین ربوبی", "gender": "MM", birthYear: "", deathYear: "", mother: "مرجان", father: "بابک ربوبی"},
+{ key: 10002401, parent: 149, name: "رادین صفوی", "gender": "MM", birthYear: "", deathYear: "", mother: "پریوش سالور", father: ""},
+{ key: 10003403, parent: 10003402, name: "رایان رضا هاشمی", "gender": "MM", birthYear: "", deathYear: "", mother: "مریم سالور#", father: ""},
+{ key: 10001644, parent: 1000164, name: "رضا امیرشاهی", "gender": "MM", birthYear: "", deathYear: "1368/03/14", mother: "ماهوش نواب عالیه", father: "محمد علی رفعت السلطان امیرشاهی"},
+{ key: 10001622, parent: 2, name: "رضاقلی اردلان", "gender": "MM", birthYear: "", deathYear: "", mother: "عباسه حاج والیه سالور", father: "ابوالحسن اردلان فخرالملک 1305-1242"},
+{ key: 10003603, parent: 7, name: "زهره باختر", "gender": "FF", birthYear: "", deathYear: "", mother: "مینو ارفع السلطنه سالور 1358-1268", father: ""},
+{ key: 10004717, parent: 10004712, name: "زهره سالور", "gender": "FF", birthYear: "", deathYear: "", mother: "", father: "نصرالدین سالور"},
+{ key: 10001602, parent: 1000160, name: "زینت سلطنه حسابی", "gender": "FF", birthYear: "", deathYear: "", mother: "معصومه شاهزاده آقا 1279-1242", father: "علی اصغر خان حسابی نصرت الملک"},
+{ key: 10004719, parent: 50, name: "ساسان سالور", "gender": "MM", birthYear: "", deathYear: "", mother: "", father: "کیومرث سالور"},
+{ key: 10002901, parent: 11, name: "سرای ملک گنجه ای", "gender": "FF", birthYear: "", deathYear: "", mother: "حورالعین قمرالدوله 1362-1275", father: "عبدالوهاب گنجه ای"},
+{ key: 10002803, parent: 6, name: "سلطان محمد اردلان", "gender": "MM", birthYear: "", deathYear: "", mother: "خانم امیرسلیمانی", father: "امان الله اردلان عزالممالک 1365-1261"},
+{ key: 1000400, parent: 1000140, name: "سلطان محمود سالور", "gender": "MM", birthYear: "", deathYear: "", mother: "", father: "فریدون میرزا افخم الدوله 1319-1257"},
+{ key: 10001611, parent: 1000161, name: "سلیمان سالور", "gender": "MM", birthYear: "", deathYear: "", mother: "نفیسه شاهزاده خانم 1307-1243", father: "محمدحسن میرزا امیرزاده"},
+{ key: 10003701, parent: 1000380, name: "سینا ریحانی", "gender": "MM", birthYear: "", deathYear: "", mother: "عفت ملک", father: ""},
+{ key: 10004001, parent: 1000400, name: "شاه محمد سالور", "gender": "MM", birthYear: "", deathYear: "", mother: "", father: "سلطان محمود سالور"},
+{ key: 1000460, parent: 113, name: "شهرزاد کوزه کنانی", "gender": "FF", birthYear: "", deathYear: "", mother: "ترانه بهرامی", father: "شهریار کوزه کنانی"},
+{ key: 10004716, parent: 10004712, name: "شهره سالور", "gender": "FF", birthYear: "", deathYear: "", mother: "", father: "نصرالدین سالور"},
+{ key: 100010001, parent: 100010000, name: "شیرین", "gender": "FF", birthYear: "", deathYear: "", mother: "ندا ربوبی", father: ""},
+{ key: 10003202, parent: 6, name: "شیرین اردلان", "gender": "FF", birthYear: "", deathYear: "", mother: "روشنک سالور 1336-1287", father: "امان الله اردلان عزالممالک 1365-1261"},
+{ key: -10003202, parent: 15, name: "شیرین اردلان *", "gender": "FF", birthYear: "", deathYear: "", mother: "روشنک سالور 1336-1287", father: "امان الله اردلان عزالممالک 1365-1261"},
+{ key: 10004714, parent: 10004712, name: "شهرداد سالور", "gender": "MM", birthYear: "", deathYear: "", mother: "", father: "نصرالدین سالور"},
+{ key: 10007001, parent: 10001629, name: "صدف اسفندیاری", "gender": "FF", birthYear: "", deathYear: "", mother: "پریناز اردلان 1357/11/07-", father: "اسفندیاری"},
+{ key: 10001612, parent: 1000161, name: "عباس سالور", "gender": "MM", birthYear: "", deathYear: "", mother: "نفیسه شاهزاده خانم 1307-1243", father: "محمدحسن میرزا امیرزاده"},
+{ key: 10004718, parent: 50, name: "عباس سالور", "gender": "MM", birthYear: "", deathYear: "", mother: "", father: "کیومرث سالور"},
+{ key: 10001624, parent: 2, name: "عباس قلی اردلان", "gender": "MM", birthYear: "", deathYear: "", mother: "عباسه حاج والیه سالور", father: "ابوالحسن اردلان فخرالملک 1305-1242"},
+{ key: 10004012, parent: 10004007, name: "عباس", "gender": "MM", birthYear: "", deathYear: "", mother: "ثریا سالور", father: ""},
+{ key: 10003201, parent: 6, name: "عبدالصمد اردلان", "gender": "MM", birthYear: "", deathYear: "", mother: "روشنک سالور 1336-1287", father: "امان الله اردلان عزالممالک 1365-1261"},
+{ key: -10003201, parent: 15, name: "عبدالصمد اردلان *", "gender": "MM", birthYear: "", deathYear: "", mother: "روشنک سالور 1336-1287", father: "امان الله اردلان عزالممالک 1365-1261"},
+{ key: 1000440, parent: 1000150, name: "عبدالصمد سالور", "gender": "MM", birthYear: "", deathYear: "", mother: "", father: "انوشیروان میرزا"},
+{ key: 10001652, parent: 1000165, name: "عبدالعلی خواجه نوری", "gender": "MM", birthYear: "", deathYear: "", mother: "عزیزه شاهزاده افخم الملک", father: ""},
+{ key: 10001632, parent: 1000163, name: "عبدالوهاب بدر", "gender": "MM", birthYear: "", deathYear: "", mother: "آذر شاهزاده نصیرالدوله", father: "میرزا احمدخان بدر نصیرالدوله"},
+{ key: 10001635, parent: 1000163, name: "عذرا بدر", "gender": "FF", birthYear: "", deathYear: "", mother: "آذر شاهزاده نصیرالدوله", father: "میرزا احمدخان بدر نصیرالدوله"},
+{ key: 10001626, parent: 2, name: "عزالملوک اردلان", "gender": "FF", birthYear: "", deathYear: "", mother: "عباسه حاج والیه سالور", father: "ابوالحسن اردلان فخرالملک 1305-1242"},
+{ key: 1000370, parent: 1000140, name: "عزت ملک", "gender": "FF", birthYear: "", deathYear: "1367/05/10", mother: "", father: "فریدون میرزا افخم الدوله 1319-1257"},
+{ key: 10001616, parent: 1000161, name: "عزیزالسلطنه سالور", "gender": "FF", birthYear: "", deathYear: "", mother: "نفیسه شاهزاده خانم 1307-1243", father: "محمدحسن میرزا امیرزاده"},
+{ key: 1000165, parent: 1000110, name: "عزیزه شاهزاده افخم الملک", "gender": "FF", birthYear: "", deathYear: "", mother: "تاجماه خانم", father: "عبدالصمد میرزا عزالدوله 1308-1222"},
+{ key: 1000167, parent: 1000110, name: "عطاءالله", "gender": "MM", birthYear: "", deathYear: "1269/05/22", mother: "تاجماه خانم", father: "عبدالصمد میرزا عزالدوله 1308-1222"},
+{ key: 10001648, parent: 1000164, name: "عفت امیرشاهی", "gender": "FF", birthYear: "", deathYear: "", mother: "ماهوش نواب عالیه", father: "محمد علی رفعت السلطان امیرشاهی"},
+{ key: 1000380, parent: 1000140, name: "عفت ملک", "gender": "FF", birthYear: "", deathYear: "", mother: "", father: "فریدون میرزا افخم الدوله 1319-1257"},
+{ key: 10001614, parent: 1000161, name: "علی الدین سالور", "gender": "MM", birthYear: "", deathYear: "", mother: "نفیسه شاهزاده خانم 1307-1243", father: "محمدحسن میرزا امیرزاده"},
+{ key: 10001643, parent: 1000164, name: "علی اکبر امیرشاهی", "gender": "MM", birthYear: "", deathYear: "1365/05/09", mother: "ماهوش نواب عالیه", father: "محمد علی رفعت السلطان امیرشاهی"},
+{ key: 10001625, parent: 2, name: "علی قلی اردلان", "gender": "MM", birthYear: "", deathYear: "", mother: "عباسه حاج والیه سالور", father: "ابوالحسن اردلان فخرالملک 1305-1242"},
+{ key: 10004011, parent: 1000400, name: "علی نقی سالور", "gender": "MM", birthYear: "", deathYear: "", mother: "", father: "سلطان محمود سالور"},
+{ key: 100011003, parent: 10001626, name: "فخرالملوک اعتضادی", "gender": "FF", birthYear: "", deathYear: "", mother: "عزالملوک اردلان", father: "سالار اعتضادی"},
+{ key: 1000180, parent: 4, name: "فرخ", "gender": "MM", birthYear: "", deathYear: "1313", mother: "", father: "حسینقلی میرزا عمادالسلطنه 1311-1247"},
+{ key: 10002802, parent: 6, name: "فروغ الملوک اردلان", "gender": "FF", birthYear: "", deathYear: "", mother: "خانم امیرسلیمانی", father: "امان الله اردلان عزالممالک 1365-1261"},
+{ key: 100011005, parent: 100011003, name: "فریدون شاهین‌نوری", "gender": "MM", birthYear: "", deathYear: "", mother: "فخرالملوک اعتضادی", father: "امیرمهذب شاهین‌نوری"},
+{ key: 1000450, parent: 1000150, name: "فیروز سالور", "gender": "MM", birthYear: "", deathYear: "1370", mother: "", father: "انوشیروان میرزا"},
+{ key: 10001645, parent: 1000164, name: "قمرالملوک امیرشاهی", "gender": "FF", birthYear: "", deathYear: "", mother: "ماهوش نواب عالیه", father: "محمد علی رفعت السلطان امیرشاهی"},
+{ key: 100011002, parent: 100011001, name: "لیلا اعتضادی", "gender": "FF", birthYear: "", deathYear: "", mother: "سمیه حسن زاده", father: "ملک منصور اعتضادی"},
+{ key: 1000351, parent: 117, name: "لیلا حجت الاسلام قمی", "gender": "FF", birthYear: "", deathYear: "", mother: "آزاده سالور", father: "احمد رضا حجة الاسلام قمی"},
+{ key: -1000351, parent: -117, name: "لیلا حجت الاسلام قمی *", "gender": "FF", birthYear: "", deathYear: "", mother: "آزاده سالور", father: "احمد رضا حجة الاسلام قمی"},
+{ key: 10004013, parent: 10004002, name: "لوییز شاهین", "gender": "MM", birthYear: "", deathYear: "", mother: "", father: "بردیا سالور"},
+{ key: 1000164, parent: 1000110, name: "ماهوش نواب عالیه", "gender": "FF", birthYear: "", deathYear: "", mother: "تاجماه خانم", father: "عبدالصمد میرزا عزالدوله 1308-1222"},
+{ key: 10001633, parent: 1000163, name: "محمد بدر", "gender": "MM", birthYear: "", deathYear: "", mother: "آذر شاهزاده نصیرالدوله", father: "میرزا احمدخان بدر نصیرالدوله"},
+{ key: 100010, parent: 10000, name: "محمد قلی خان قاجار قوانلو", "gender": "MM", birthYear: "", deathYear: "", mother: "", father: "حسین خان زیاد اوغلی قاجار"},
+{ key: 100030, parent: 100020, name: "محمد ولی خان قاجار قوانلو", "gender": "MM", birthYear: "", deathYear: "", mother: "", father: "مهدی خان قاجار قوانلو"},
+{ key: 10001601, parent: 1000160, name: "محمدحسین حسابی", "gender": "MM", birthYear: "", deathYear: "", mother: "معصومه شاهزاده آقا 1279-1242", father: "علی اصغر خان حسابی نصرت الملک"},
+{ key: 10001631, parent: 1000163, name: "محمود بدر", "gender": "MM", birthYear: "", deathYear: "", mother: "آذر شاهزاده نصیرالدوله", father: "میرزا احمدخان بدر نصیرالدوله"},
+{ key: 10001627, parent: 2, name: "مریم اردلان", "gender": "FF", birthYear: "", deathYear: "", mother: "عباسه حاج والیه سالور", father: "ابوالحسن اردلان فخرالملک 1305-1242"},
+{ key: 100011004, parent: 100011003, name: "مسعود شاهین‌نوری", "gender": "MM", birthYear: "", deathYear: "", mother: "فخرالملوک اعتضادی", father: "امیرمهذب شاهین‌نوری"},
+{ key: 10003901, parent: 1000390, name: "مصطفی صمصامی مهاجر", "gender": "MM", birthYear: "", deathYear: "", mother: "شاهزاده صمصامی بتول", father: ""},
+{ key: 10004723, parent: 10001612, name: "معزالدین سالور", "gender": "M", birthYear: "", deathYear: "", mother: "", father: "عباس سالور#"},
+{ key: 10001653, parent: 1000165, name: "ملک تاج خواجه نوری", "gender": "FF", birthYear: "", deathYear: "", mother: "عزیزه شاهزاده افخم الملک", father: ""},
+{ key: 100011001, parent: 10001626, name: "ملک منصور اعتضادی", "gender": "MM", birthYear: "", deathYear: "", mother: "عزالملوک اردلان", father: "سالار اعتضادی"},
+{ key: 100020, parent: 100010, name: "مهدی خان قاجار قوانلو", "gender": "MM", birthYear: "", deathYear: "", mother: "", father: "محمد قلی خان قاجار قوانلو"},
+{ key: 10004715, parent: 10004712, name: "مهرزاد سالور", "gender": "FF", birthYear: "", deathYear: "", mother: "", father: "نصرالدین سالور"},
+{ key: 10001646, parent: 1000164, name: "مهرماه امیرشاهی", "gender": "FF", birthYear: "", deathYear: "1361/11/25", mother: "ماهوش نواب عالیه", father: "محمد علی رفعت السلطان امیرشاهی"},
+{ key: 1000471, parent: 100047, name: "میرمنوچهر سیادت", "gender": "MM", birthYear: "", deathYear: "", mother: "ابتهاج الملوک اردلان 1371-1285", father: ""},
+{ key: 10004401, parent: 1000440, name: "نادر سالور", "gender": "MM", birthYear: "", deathYear: "", mother: "", father: "عبدالصمد سالور"},
+{ key: 10008000, parent: 10001623, name: "ناصره اردلان", "gender": "FF", birthYear: "", deathYear: "", mother: "ملک تاج خواجه نوری", father: "ناصر قلی اردلان 1357/01/24-"},
+{ key: 10004707, parent: 10001615, name: "ناکهه (خدیجه) کاظمی صاحب جم", "gender": "FF", birthYear: "", deathYear: "", mother: "افسرالملوک سالور", father: ""},
+{ key: 100010000, parent: 10008000, name: "ندا ربوبی", "gender": "FF", birthYear: "", deathYear: "", mother: "ناصره اردلان", father: "اکبر ربوبی"},
+{ key: 10001623, parent: 2, name: "ناصر قلی اردلان", "gender": "MM", birthYear: "", deathYear: "1357/01/24", mother: "عباسه حاج والیه سالور", father: "ابوالحسن اردلان فخرالملک 1305-1242"},
+{ key: 10004712, parent: 10001612, name: "نصرالدین سالور", "gender": "MM", birthYear: "", deathYear: "", mother: "", father: "عباس سالور#"},
+{ key: 10002801, parent: 6, name: "نصرت الله اردلان", "gender": "MM", birthYear: "", deathYear: "", mother: "خانم امیرسلیمانی", father: "امان الله اردلان عزالممالک 1365-1261"},
+{ key: 10004009, parent: 1000400, name: "نوشین سالور", "gender": "FF", birthYear: "", deathYear: "", mother: "", father: "سلطان محمود سالور"},
+{ key: 10004003, parent: 10004001, name: "هرمز سالور", "gender": "MM", birthYear: "", deathYear: "", mother: "", father: "شاه محمد سالور"},
+{ key: 10004900, parent: 27, name: "هرمز کورت معتمدی", "gender": "M", birthYear: "", deathYear: "", mother: "پری رخ گنجه ای 1397-1298", father: "عباس معتمدی 1375-1298"},
+{ key: 10003602, parent: 7, name: "هلن باختر", "gender": "FF", birthYear: "", deathYear: "", mother: "مینو ارفع السلطنه سالور 1358-1268", father: ""},
+{ key: 100011006, parent: 10001626, name: "هوشنگ اعتضادی", "gender": "MM", birthYear: "", deathYear: "", mother: "عزالملوک اردلان", father: "سالار اعتضادی"},
+{ key: 10001628, parent: 2, name: "والی اعظم اردلان", "gender": "FF", birthYear: "", deathYear: "", mother: "عباسه حاج والیه سالور", father: "ابوالحسن اردلان فخرالملک 1305-1242"},
+{ key: 10004306, parent: 10004305, name: "ونداد سالور", "gender": "MM", birthYear: "", deathYear: "", mother: "", father: "بهرام سالور"},
+{ key: 10002403, parent: 177, name: "ونسا سالور", "gender": "FF", birthYear: "", deathYear: "", mother: "", father: "کیان سالور"},
+{ key: 10002701, parent: 18, name: "کامران سالور", "gender": "MM", birthYear: "", deathYear: "1374", mother: "", father: "ملک قاسم سالور 1341-1291"},
+{ key: 324, parent: 11, name: "فرهاد گنجه ای", "gender": "M", birthYear: "", deathYear: "", mother: "حورالعین قمرالدوله 1362-1275", father: "عبدالوهاب گنجه ای"},
+{ key: 100011008, parent: 100011006, name: "سوزان اعتضادی", "gender": "FF", birthYear: "", deathYear: "", mother: "کاترین", father: "هوشنگ اعتضادی"},
+{ key: 100011007, parent: 100011006, name: "داود اعتضادی", "gender": "MM", birthYear: "", deathYear: "", mother: "کاترین", father: "هوشنگ اعتضادی"},
+{ key: 100011011, parent: 100011009, name: "تورج اعتضادی", "gender": "MM", birthYear: "", deathYear: "", mother: "فرح‌بخش افخم ابراهیمی", father: "حسینعلی اعتضادی"},
+{ key: 100011010, parent: 100011009, name: "بیژن اعتضادی", "gender": "MM", birthYear: "", deathYear: "", mother: "فرح‌بخش افخم ابراهیمی", father: "حسینعلی اعتضادی"},
+{ key: 100011012, parent: 100011009, name: "ایرج اعتضادی", "gender": "MM", birthYear: "", deathYear: "", mother: "فرح‌بخش افخم ابراهیمی", father: "حسینعلی اعتضادی"},
+{ key: 100040, parent: 100030, name: "شاهقلی خان قاجار قوانلو", "gender": "MM", birthYear: "1045", deathYear: "1073", mother: "", father: "محمد ولی خان قاجار قوانلو"},
+{ key: 100050, parent: 100040, name: "فتحعلی خان قاجار", "gender": "MM", birthYear: "1064", deathYear: "1105", mother: "", father: "شاهقلی خان قاجار قوانلو 1073-1045"},
+{ key: 100060, parent: 100050, name: "محمدحسن خان قاجار", "gender": "MM", birthYear: "1101", deathYear: "1131", mother: "", father: "فتحعلی خان قاجار 1105-1064"},
+{ key: 100065, parent: 100060, name: "آقا محمد خان قاجار", "gender": "MM", birthYear: "1121", deathYear: "1176", mother: "", father: "محمدحسن خان قاجار 1131-1101"},
+{ key: 100070, parent: 100060, name: "حسینقلی خان جهانسوز شاه", "gender": "MM", birthYear: "1123", deathYear: "1156", mother: "", father: "محمدحسن خان قاجار 1131-1101"},
+{ key: 100080, parent: 100070, name: "فتحعلی شاه", "gender": "MM", birthYear: "1151", deathYear: "1213", mother: "", father: "حسینقلی خان جهانسوز شاه 1156-1123"},
+{ key: 100090, parent: 100080, name: "عباس میرزا نایب السلطنه", "gender": "MM", birthYear: "1168", deathYear: "1212", mother: "", father: "فتحعلی شاه 1213-1151"},
+{ key: 1000100, parent: 100090, name: "محمدشاه", "gender": "MM", birthYear: "1187", deathYear: "1227", mother: "", father: "عباس میرزا نایب السلطنه 1212-1168"},
+{ key: 1000111, parent: 1000100, name: "ناصرالدین شاه", "gender": "MM", birthYear: "1210", deathYear: "1275", mother: "", father: "محمدشاه 1227-1187"},
+{ key: 1000112, parent: 1000100, name: "عباس میرزا ملک آرا", "gender": "MM", birthYear: "1218", deathYear: "1276", mother: "", father: "محمدشاه 1227-1187"},
+{ key: 1000113, parent: 1000100, name: "محمدتقی میرزا رکن الدوله", "gender": "MM", birthYear: "1219", deathYear: "1280", mother: "", father: "محمدشاه 1227-1187"},
+{ key: 1000110, parent: 1000100, name: "عبدالصمد میرزا عزالدوله", "gender": "MM", birthYear: "1222", deathYear: "1308", mother: "اُقل‌بیگه خانم از سالورهای ترکمن", father: "محمدشاه 1227-1187"},
+{ key: 2, parent: 1000110, name: "عباسه حاج والیه سالور", "gender": "F", birthYear: "1241", deathYear: "", mother: "تاجماه خانم", father: "عبدالصمد میرزا عزالدوله 1308-1222"},
+{ key: 1000160, parent: 1000110, name: "معصومه شاهزاده آقا", "gender": "FF", birthYear: "1242", deathYear: "1279", mother: "فاطمه خانم", father: "عبدالصمد میرزا عزالدوله 1308-1222"},
+{ key: 1000161, parent: 1000110, name: "نفیسه شاهزاده خانم", "gender": "FF", birthYear: "1243", deathYear: "1307", mother: "تاجماه خانم", father: "عبدالصمد میرزا عزالدوله 1308-1222"},
+{ key: 4, parent: 1000110, name: "حسینقلی میرزا عمادالسلطنه", "gender": "M", birthYear: "1247", deathYear: "1311", mother: "تاجماه خانم", father: "عبدالصمد میرزا عزالدوله 1308-1222"},
+{ key: 5, parent: 1000110, name: "قهرمان میرزا عین السلطنه", "gender": "M", birthYear: "1250/11/01", deathYear: "1324/07/09", mother: "تاجماه خانم", father: "عبدالصمد میرزا عزالدوله 1308-1222"},
+{ key: 1000140, parent: 1000110, name: "فریدون میرزا افخم الدوله", "gender": "MM", birthYear: "1257", deathYear: "1319", mother: "تاجماه خانم", father: "عبدالصمد میرزا عزالدوله 1308-1222"},
+{ key: 6, parent: 2, name: "امان الله اردلان عزالممالک", "gender": "M", birthYear: "1261", deathYear: "1365", mother: "عباسه حاج والیه سالور", father: "ابوالحسن اردلان فخرالملک 1305-1242"},
+{ key: 7, parent: 1000140, name: "مینو ارفع السلطنه سالور", "gender": "F", birthYear: "1268", deathYear: "1358", mother: "", father: "فریدون میرزا افخم الدوله 1319-1257"},
+{ key: 9, parent: 5, name: "نزهت الملوک سالور", "gender": "F", birthYear: "1272", deathYear: "1347", mother: "کوکب درگاهی", father: "قهرمان میرزا عین السلطنه 1324/07/09-1250/11/01"},
+{ key: 1000410, parent: 1000140, name: "هرمز سالور", "gender": "MM", birthYear: "1273", deathYear: "1311", mother: "", father: "فریدون میرزا افخم الدوله 1319-1257"},
+{ key: 10, parent: 1000164, name: "اسماعیل امیرشاهی", "gender": "M", birthYear: "1274/02/18", deathYear: "1367/07/01", mother: "ماهوش نواب عالیه", father: "محمد علی رفعت السلطان امیرشاهی"},
+{ key: 11, parent: 5, name: "حورالعین قمرالدوله", "gender": "F", birthYear: "1275", deathYear: "1362", mother: "کوکب درگاهی", father: "قهرمان میرزا عین السلطنه 1324/07/09-1250/11/01"},
+{ key: 1000190, parent: 4, name: "پریوش احترام الدوله", "gender": "FF", birthYear: "1276", deathYear: "1351/09/15", mother: "زهرا خانم", father: "حسینقلی میرزا عمادالسلطنه 1311-1247"},
+{ key: 12, parent: 5, name: "زینب عین الملوک سالور", "gender": "F", birthYear: "1278", deathYear: "1352", mother: "کوکب درگاهی", father: "قهرمان میرزا عین السلطنه 1324/07/09-1250/11/01"},
+{ key: 10001642, parent: 1000164, name: "محمد علی امیرشاهی", "gender": "MM", birthYear: "1279/01/01", deathYear: "1352/06/27", mother: "ماهوش نواب عالیه", father: "محمد علی رفعت السلطان امیرشاهی"},
+{ key: 13, parent: 4, name: "عبدالله میرزا سالور", "gender": "M", birthYear: "1280", deathYear: "1338", mother: "مریم عمید سمنانی - مزین السلطنه", father: "حسینقلی میرزا عمادالسلطنه 1311-1247"},
+{ key: 14, parent: 5, name: "ملکه سالور", "gender": "F", birthYear: "1283", deathYear: "1381", mother: "کوکب درگاهی", father: "قهرمان میرزا عین السلطنه 1324/07/09-1250/11/01"},
+{ key: 100047, parent: 6, name: "ابتهاج الملوک اردلان", "gender": "FF", birthYear: "1285", deathYear: "1371", mother: "خانم امیرسلیمانی", father: "امان الله اردلان عزالممالک 1365-1261"},
+{ key: 15, parent: 5, name: "روشنک سالور", "gender": "F", birthYear: "1287", deathYear: "1336", mother: "کوکب درگاهی", father: "قهرمان میرزا عین السلطنه 1324/07/09-1250/11/01"},
+{ key: 16, parent: 4, name: "مدیحه سالور", "gender": "F", birthYear: "1289", deathYear: "1365", mother: "ماه طلعت شکی 1347/08/10-1275", father: "حسینقلی میرزا عمادالسلطنه 1311-1247"},
+{ key: 18, parent: 4, name: "ملک قاسم سالور", "gender": "M", birthYear: "1291", deathYear: "1341", mother: "زیورالملوک مدنی 1343/04/31-1274", father: "حسینقلی میرزا عمادالسلطنه 1311-1247"},
+{ key: 1000390, parent: 1000140, name: "شاهزاده صمصامی بتول", "gender": "FF", birthYear: "1291", deathYear: "", mother: "", father: "فریدون میرزا افخم الدوله 1319-1257"},
+{ key: 1000191, parent: 5, name: "بهمن", "gender": "MM", birthYear: "1291/08/17", deathYear: "1296/09/14", mother: "", father: "قهرمان میرزا عین السلطنه 1324/07/09-1250/11/01"},
+{ key: 20, parent: 4, name: "منوچهر سالور", "gender": "M", birthYear: "1293", deathYear: "1389/10/04", mother: "ماه طلعت شکی 1347/08/10-1275", father: "حسینقلی میرزا عمادالسلطنه 1311-1247"},
+{ key: 21, parent: 5, name: "عباس سالور", "gender": "M", birthYear: "1294/07/01", deathYear: "1389/10/19", mother: "زینب", father: "قهرمان میرزا عین السلطنه 1324/07/09-1250/11/01"},
+{ key: 22, parent: 5, name: "سلطان مسعود سالور", "gender": "M", birthYear: "1295/07/01", deathYear: "1391/05/16", mother: "زینب", father: "قهرمان میرزا عین السلطنه 1324/07/09-1250/11/01"},
+{ key: 23, parent: 1000140, name: "سلطان یوسف سالور", "gender": "M", birthYear: "1296", deathYear: "1353", mother: "", father: "فریدون میرزا افخم الدوله 1319-1257"},
+{ key: 24, parent: 4, name: "فرود سالور", "gender": "M", birthYear: "1297", deathYear: "1375", mother: "ماه طلعت شکی 1347/08/10-1275", father: "حسینقلی میرزا عمادالسلطنه 1311-1247"},
+{ key: 26, parent: 12, name: "عزالدین کاظمی", "gender": "M", birthYear: "1298", deathYear: "1384", mother: "زینب عین الملوک سالور 1352-1278", father: "باقر کاظمی مهذب الدوله"},
+{ key: 1000420, parent: 1000140, name: "پرویز سالور", "gender": "MM", birthYear: "1298", deathYear: "", mother: "", father: "فریدون میرزا افخم الدوله 1319-1257"},
+{ key: 27, parent: 11, name: "پری رخ گنجه ای", "gender": "F", birthYear: "1298", deathYear: "1397", mother: "حورالعین قمرالدوله 1362-1275", father: "عبدالوهاب گنجه ای"},
+{ key: 28, parent: 7, name: "یحیی باختر", "gender": "M", birthYear: "1298", deathYear: "1379", mother: "مینو ارفع السلطنه سالور 1358-1268", father: "حسن نظم السلطنه باختر 1354-1270"},
+{ key: 29, parent: 11, name: "ناصرالدین گنجه ای", "gender": "M", birthYear: "1299", deathYear: "", mother: "حورالعین قمرالدوله 1362-1275", father: "عبدالوهاب گنجه ای"},
+{ key: 31, parent: 5, name: "بهمن سالور", "gender": "M", birthYear: "1299/04/24", deathYear: "1392", mother: "زینب", father: "قهرمان میرزا عین السلطنه 1324/07/09-1250/11/01"},
+{ key: 33, parent: 12, name: "فرشته کاظمی", "gender": "F", birthYear: "1300", deathYear: "1374", mother: "زینب عین الملوک سالور 1352-1278", father: "باقر کاظمی مهذب الدوله"},
+{ key: 34, parent: 7, name: "محمد باختر", "gender": "M", birthYear: "1300", deathYear: "", mother: "مینو ارفع السلطنه سالور 1358-1268", father: "حسن نظم السلطنه باختر 1354-1270"},
+{ key: 35, parent: 4, name: "تاجلی سالور", "gender": "F", birthYear: "1300/07/24", deathYear: "1390/07/05", mother: "زیورالملوک مدنی 1343/04/31-1274", father: "حسینقلی میرزا عمادالسلطنه 1311-1247"},
+{ key: 37, parent: 100047, name: "امیر شاپور سیادت", "gender": "M", birthYear: "1302", deathYear: "1385", mother: "ابتهاج الملوک اردلان 1371-1285", father: "فضل الله سیادت"},
+{ key: 36, parent: 13, name: "سبکتکین سالور", "gender": "M", birthYear: "1302", deathYear: "1370", mother: "نزهت الملوک سالور 1347-1272", father: "عبدالله میرزا سالور 1338-1280"},
+{ key: -36, parent: 9, name: "سبکتکین سالور *", "gender": "M", birthYear: "1302", deathYear: "1370", mother: "نزهت الملوک سالور 1347-1272", father: "عبدالله میرزا سالور 1338-1280"},
+{ key: 40, parent: 6, name: "پروانه اردلان", "gender": "F", birthYear: "1303", deathYear: "1398", mother: "روشنک سالور 1336-1287", father: "امان الله اردلان عزالممالک 1365-1261"},
+{ key: -40, parent: 15, name: "پروانه اردلان *", "gender": "F", birthYear: "1303", deathYear: "1398", mother: "روشنک سالور 1336-1287", father: "امان الله اردلان عزالممالک 1365-1261"},
+{ key: 44, parent: 4, name: "صلاح الدین سالور", "gender": "M", birthYear: "1305", deathYear: "1376", mother: "زیورالملوک مدنی 1343/04/31-1274", father: "حسینقلی میرزا عمادالسلطنه 1311-1247"},
+{ key: 10001671, parent: 13, name: "فرانک سالور", "gender": "FF", birthYear: "1307", deathYear: "1399/11", mother: "نزهت الملوک سالور 1347-1272", father: "عبدالله میرزا سالور 1338-1280"},
+{ key: -10001671, parent: 9, name: "فرانک سالور *", "gender": "FF", birthYear: "1307", deathYear: "1399/11", mother: "نزهت الملوک سالور 1347-1272", father: "عبدالله میرزا سالور 1338-1280"},
+{ key: 46, parent: 11, name: "سودابه گنجه ای", "gender": "F", birthYear: "1307", deathYear: "", mother: "حورالعین قمرالدوله 1362-1275", father: "عبدالوهاب گنجه ای"},
+{ key: 48, parent: 16, name: "لعبت شیرین میرزا حسابی", "gender": "F", birthYear: "1307/01/07", deathYear: "1391/07/10", mother: "مدیحه سالور 1365-1289", father: "ابوالقاسم میرزاحسابی"},
+{ key: 49, parent: 13, name: "نازتاب سالور", "gender": "F", birthYear: "1307/03/16", deathYear: "1391/12/06", mother: "نزهت الملوک سالور 1347-1272", father: "عبدالله میرزا سالور 1338-1280"},
+{ key: -49, parent: 9, name: "نازتاب سالور *", "gender": "F", birthYear: "1307/03/16", deathYear: "1391/12/06", mother: "نزهت الملوک سالور 1347-1272", father: "عبدالله میرزا سالور 1338-1280"},
+{ key: 50, parent: 10001612, name: "کیومرث سالور", "gender": "M", birthYear: "1307/04/15", deathYear: "", mother: "گلی", father: "عباس سالور#"},
+{ key: 56, parent: 10001624, name: "پری اردلان مالک", "gender": "F", birthYear: "1308", deathYear: "", mother: "فرانسیس داور اردلان", father: "عباس قلی اردلان"},
+{ key: 57, parent: 4, name: "مهرداد سالور", "gender": "M", birthYear: "1308/01/22", deathYear: "1387/05/07", mother: "زیورالملوک مدنی 1343/04/31-1274", father: "حسینقلی میرزا عمادالسلطنه 1311-1247"},
+{ key: 58, parent: 4, name: "آرا سالور", "gender": "F", birthYear: "1308/07/08", deathYear: "1388/11/08", mother: "ماه طلعت شکی 1347/08/10-1275", father: "حسینقلی میرزا عمادالسلطنه 1311-1247"},
+{ key: 59, parent: 6, name: "ابوالفتح اردلان", "gender": "M", birthYear: "1308/07/29", deathYear: "1386/06/09", mother: "روشنک سالور 1336-1287", father: "امان الله اردلان عزالممالک 1365-1261"},
+{ key: -59, parent: 15, name: "ابوالفتح اردلان *", "gender": "M", birthYear: "1308/07/29", deathYear: "1386/06/09", mother: "روشنک سالور 1336-1287", father: "امان الله اردلان عزالممالک 1365-1261"},
+{ key: 60, parent: 16, name: "عبدالحمید میرزا حسابی", "gender": "M", birthYear: "1309", deathYear: "", mother: "مدیحه سالور 1365-1289", father: "ابوالقاسم میرزاحسابی"},
+{ key: 61, parent: 1000390, name: "گیتی فریده صمصامی محاجر", "gender": "F", birthYear: "1309/03/13", deathYear: "", mother: "شاهزاده صمصامی بتول", father: "عبدالحسین صمصامی محاجر"},
+{ key: 62, parent: 10001623, name: "پرویز اردلان", "gender": "M", birthYear: "1309/05/10", deathYear: "1396/02/11", mother: "ملک تاج خواجه نوری", father: "ناصر قلی اردلان 1357/01/24-"},
+{ key: -62, parent: 10001653, name: "پرویز اردلان *", "gender": "M", birthYear: "1309/05/10", deathYear: "1396/02/11", mother: "ملک تاج خواجه نوری", father: "ناصر قلی اردلان 1357/01/24-"},
+{ key: 65, parent: 18, name: "حسینقلی سالور", "gender": "M", birthYear: "1312", deathYear: "1393", mother: "اشرف سیلسپور خانلرخان 1380-1290", father: "ملک قاسم سالور 1341-1291"},
+{ key: 68, parent: 10001612, name: "فرشته سالور", "gender": "F", birthYear: "1314", deathYear: "1399", mother: "گلی چایکار", father: "عباس سالور#"},
+{ key: 71, parent: 10, name: "مهوش امیرشاهی", "gender": "F", birthYear: "1314/01/06", deathYear: "", mother: "فاطمه محمودی 1360/12/14-1291/11/24", father: "اسماعیل امیرشاهی 1367/07/01-1274/02/18"},
+{ key: 73, parent: 18, name: "عطاءالله سالور", "gender": "M", birthYear: "1314/11/20", deathYear: "", mother: "اشرف سیلسپور خانلرخان 1380-1290", father: "ملک قاسم سالور 1341-1291"},
+{ key: 74, parent: 14, name: "شایسته درمشیان یاسمی", "gender": "F", birthYear: "1314/12/10", deathYear: "1387", mother: "ملکه سالور 1381-1283", father: "محمد علی درمشیان"},
+{ key: 75, parent: 1000166, name: "ماهرو جهانسوز برنز", "gender": "F", birthYear: "1315", deathYear: "", mother: "جانجان سالور 1370-", father: "داراب جهانسوز"},
+{ key: 10001654, parent: 10001651, name: "دارا خواجه نوری", "gender": "MM", birthYear: "1316/09/05", deathYear: "1400/07/11", mother: "", father: "حسین خواجه نوری"},
+{ key: 80, parent: 18, name: "تابنده سالور", "gender": "F", birthYear: "1317", deathYear: "", mother: "اشرف سیلسپور خانلرخان 1380-1290", father: "ملک قاسم سالور 1341-1291"},
+{ key: 79, parent: 10002802, name: "فرزاد دادجو", "gender": "M", birthYear: "1317", deathYear: "", mother: "فروغ الملوک اردلان", father: "مهدی قلی امیر دادجو"},
+{ key: 82, parent: 27, name: "کوروش کورت معتمدی", "gender": "M", birthYear: "1319/11/11", deathYear: "", mother: "پری رخ گنجه ای 1397-1298", father: "عباس معتمدی 1375-1298"},
+{ key: 84, parent: 18, name: "شاهرخ سالور", "gender": "M", birthYear: "1321", deathYear: "", mother: "اشرف سیلسپور خانلرخان 1380-1290", father: "ملک قاسم سالور 1341-1291"},
+{ key: 86, parent: 21, name: "عباسه سالور", "gender": "F", birthYear: "1322/02/05", deathYear: "", mother: "تاجلی سالور 1390/07/05-1300/07/24", father: "عباس سالور 1389/10/19-1294/07/01"},
+{ key: -86, parent: 35, name: "عباسه سالور *", "gender": "F", birthYear: "1322/02/05", deathYear: "", mother: "تاجلی سالور 1390/07/05-1300/07/24", father: "عباس سالور 1389/10/19-1294/07/01"},
+{ key: 87, parent: 10, name: "ژینوس امیرشاهی", "gender": "F", birthYear: "1322/03/09", deathYear: "", mother: "فاطمه محمودی 1360/12/14-1291/11/24", father: "اسماعیل امیرشاهی 1367/07/01-1274/02/18"},
+{ key: 88, parent: 22, name: "مینو سالور", "gender": "F", birthYear: "1323", deathYear: "", mother: "بتول کامرانی 1389/01/15-1304/09/08", father: "سلطان مسعود سالور 1391/05/16-1295/07/01"},
+{ key: 93, parent: 16, name: "نفیسه میرزا حسابی", "gender": "F", birthYear: "1325", deathYear: "", mother: "مدیحه سالور 1365-1289", father: "سید ابوالقاسم میرزا حسابی 1327-12؟؟"},
+{ key: 94, parent: 20, name: "رضاقلی سالور", "gender": "M", birthYear: "1325/05/21", deathYear: "", mother: "منصوره عسکری 1395/07/19-1302", father: "منوچهر سالور 1389/10/04-1293"},
+{ key: 95, parent: 22, name: "ایرج سالور", "gender": "M", birthYear: "1325/12/01", deathYear: "", mother: "بتول کامرانی 1389/01/15-1304/09/08", father: "سلطان مسعود سالور 1391/05/16-1295/07/01"},
+{ key: 97, parent: 20, name: "فاطمه سالور", "gender": "F", birthYear: "1326/09/02", deathYear: "", mother: "منصوره عسکری 1395/07/19-1302", father: "منوچهر سالور 1389/10/04-1293"},
+{ key: 100, parent: 24, name: "شهرزاد سالور", "gender": "F", birthYear: "1327", deathYear: "", mother: "سونیا ظلی 1391-1308", father: "فرود سالور 1375-1297"},
+{ key: 102, parent: 28, name: "ژاله باختر", "gender": "F", birthYear: "1327", deathYear: "", mother: "پریرخ صدری باختر 1386-1315", father: "یحیی باختر 1379-1298"},
+{ key: 104, parent: 21, name: "سلطان حسین سالور", "gender": "M", birthYear: "1327/08/12", deathYear: "", mother: "تاجلی سالور 1390/07/05-1300/07/24", father: "عباس سالور 1389/10/19-1294/07/01"},
+{ key: -104, parent: 35, name: "سلطان حسین سالور *", "gender": "M", birthYear: "1327/08/12", deathYear: "", mother: "تاجلی سالور 1390/07/05-1300/07/24", father: "عباس سالور 1389/10/19-1294/07/01"},
+{ key: 105, parent: 28, name: "خسرو باختر", "gender": "M", birthYear: "1328", deathYear: "", mother: "پریرخ صدری باختر 1386-1315", father: "یحیی باختر 1379-1298"},
+{ key: 108, parent: 20, name: "فرخ سالور", "gender": "M", birthYear: "1328/05/18", deathYear: "1402/08/24", mother: "منصوره عسکری 1395/07/19-1302", father: "منوچهر سالور 1389/10/04-1293"},
+{ key: 111, parent: 21, name: "سلطان علی سالور", "gender": "M", birthYear: "1329/04/12", deathYear: "", mother: "تاجلی سالور 1390/07/05-1300/07/24", father: "عباس سالور 1389/10/19-1294/07/01"},
+{ key: 113, parent: 48, name: "شهریار کوزه کنانی", "gender": "M", birthYear: "1330", deathYear: "", mother: "لعبت شیرین میرزا حسابی 1391/07/10-1307/01/07", father: "حبیب کوزه کنانی 1377/10/16-1305/01/05"},
+{ key: 114, parent: 28, name: "مریم باختر", "gender": "F", birthYear: "1330", deathYear: "", mother: "پریرخ صدری باختر 1386-1315", father: "یحیی باختر 1379-1298"},
+{ key: 117, parent: 31, name: "آزاده سالور", "gender": "F", birthYear: "1331", deathYear: "", mother: "گیتی فریده صمصامی محاجر", father: "بهمن سالور 1392-1299/04/24"},
+{ key: -117, parent: 61, name: "آزاده سالور *", "gender": "F", birthYear: "1331", deathYear: "", mother: "گیتی فریده صمصامی محاجر", father: "بهمن سالور 1392-1299/04/24"},
+{ key: 116, parent: 33, name: "الهه عضدی", "gender": "F", birthYear: "1331", deathYear: "", mother: "فرشته کاظمی 1374-1300", father: "امیر عضدی 1385-1300"},
+{ key: 118, parent: 20, name: "محمد سالور", "gender": "M", birthYear: "1331/01/31", deathYear: "", mother: "منصوره عسکری 1395/07/19-1302", father: "منوچهر سالور 1389/10/04-1293"},
+{ key: 121, parent: 23, name: "مهوش سالور", "gender": "F", birthYear: "1332", deathYear: "", mother: "مهری جلالی 1400-1314", father: "سلطان یوسف سالور 1353-1296"},
+{ key: 122, parent: 37, name: "بهرام سیادت", "gender": "M", birthYear: "1332", deathYear: "", mother: "پرستو دشتی", father: "امیر شاپور سیادت 1385-1302"},
+{ key: 123, parent: 74, name: "جمشید یاسمی", "gender": "M", birthYear: "1332", deathYear: "1384", mother: "شایسته درمشیان یاسمی 1387-1314/12/10", father: "بیژن یاسمی 1395-1304"},
+{ key: 120, parent: 28, name: "فریدون باختر", "gender": "M", birthYear: "1332", deathYear: "", mother: "پریرخ صدری باختر 1386-1315", father: "یحیی باختر 1379-1298"},
+{ key: 126, parent: 58, name: "امیرمحسن حشمتی", "gender": "M", birthYear: "1332/08/29", deathYear: "", mother: "آرا سالور 1388/11/08-1308/07/08", father: "امیرناصر حشمتی 1399-1299"},
+{ key: 127, parent: 22, name: "قهرمان سالور", "gender": "M", birthYear: "1332/10/17", deathYear: "", mother: "بتول کامرانی 1389/01/15-1304/09/08", father: "سلطان مسعود سالور 1391/05/16-1295/07/01"},
+{ key: 130, parent: 49, name: "مریم سالور", "gender": "F", birthYear: "1333/07/02", deathYear: "", mother: "نازتاب سالور 1391/12/06-1307/03/16", father: "حسین تهرانی 1343/09-1309/09"},
+{ key: -130, parent: -49, name: "مریم سالور *", "gender": "F", birthYear: "1333/07/02", deathYear: "", mother: "نازتاب سالور 1391/12/06-1307/03/16", father: "حسین تهرانی 1343/09-1309/09"},
+{ key: 132, parent: 74, name: "لادن یاسمی برادران جوادی", "gender": "F", birthYear: "1334", deathYear: "", mother: "شایسته درمشیان یاسمی 1387-1314/12/10", father: "بیژن یاسمی 1395-1304"},
+{ key: 135, parent: 37, name: "داریوش سیادت", "gender": "M", birthYear: "1334", deathYear: "", mother: "پرستو دشتی", father: "امیر شاپور سیادت 1385-1302"},
+{ key: 133, parent: 36, name: "سپیده سالور", "gender": "F", birthYear: "1334", deathYear: "", mother: "افتخار احمدی علیا", father: "سبکتکین سالور 1370-1302"},
+{ key: -133, parent: -36, name: "سپیده سالور *", "gender": "F", birthYear: "1334", deathYear: "", mother: "افتخار احمدی علیا", father: "سبکتکین سالور 1370-1302"},
+{ key: 136, parent: 23, name: "فریدون سالور", "gender": "M", birthYear: "1334/02/28", deathYear: "1383/04/31", mother: "مهری جلالی 1400-1314", father: "سلطان یوسف سالور 1353-1296"},
+{ key: 137, parent: 33, name: "جهانگیر جانی عضدی", "gender": "M", birthYear: "1335", deathYear: "", mother: "فرشته کاظمی 1374-1300", father: "امیر عضدی 1385-1300"},
+{ key: 138, parent: 48, name: "کامیار کوزه کنانی", "gender": "M", birthYear: "1335", deathYear: "", mother: "لعبت شیرین میرزا حسابی 1391/07/10-1307/01/07", father: "حبیب کوزه کنانی 1377/10/16-1305/01/05"},
+{ key: 139, parent: 28, name: "دردانه باختر", "gender": "F", birthYear: "1336", deathYear: "", mother: "پریرخ صدری باختر 1386-1315", father: "یحیی باختر 1379-1298"},
+{ key: 140, parent: 58, name: "امیرحسن حشمتی", "gender": "M", birthYear: "1336", deathYear: "", mother: "آرا سالور 1388/11/08-1308/07/08", father: "امیرناصر حشمتی 1399-1299"},
+{ key: 141, parent: 23, name: "آذر سالور", "gender": "F", birthYear: "1336", deathYear: "", mother: "مهری جلالی 1400-1314", father: "سلطان یوسف سالور 1353-1296"},
+{ key: 144, parent: 37, name: "سوفی سیادت", "gender": "F", birthYear: "1336", deathYear: "", mother: "پرستو دشتی", father: "امیر شاپور سیادت 1385-1302"},
+{ key: 145, parent: 57, name: "کسری سالور", "gender": "M", birthYear: "1336/04/28", deathYear: "", mother: "پروین بهنگار 1398-1308", father: "مهرداد سالور 1387/05/07-1308/01/22"},
+{ key: 146, parent: 59, name: "فرخ اردلان", "gender": "M", birthYear: "1336/06/08", deathYear: "", mother: "مهوش امیرشاهی", father: "ابوالفتح اردلان 1386/06/09-1308/07/29"},
+{ key: -146, parent: -59, name: "فرخ اردلان *", "gender": "M", birthYear: "1336/06/08", deathYear: "", mother: "مهوش امیرشاهی", father: "ابوالفتح اردلان 1386/06/09-1308/07/29"},
+{ key: 147, parent: 31, name: "ترانه سالور", "gender": "F", birthYear: "1336/08/17", deathYear: "", mother: "گیتی فریده صمصامی محاجر", father: "بهمن سالور 1392-1299/04/24"},
+{ key: -147, parent: 61, name: "ترانه سالور *", "gender": "F", birthYear: "1336/08/17", deathYear: "", mother: "گیتی فریده صمصامی محاجر", father: "بهمن سالور 1392-1299/04/24"},
+{ key: 149, parent: 44, name: "پریوش سالور", "gender": "F", birthYear: "1337", deathYear: "", mother: "منیر مقدم", father: "صلاح الدین سالور 1376-1305"},
+{ key: 150, parent: 36, name: "سنجر سالور", "gender": "M", birthYear: "1337", deathYear: "1401", mother: "افتخار احمدی علیا", father: "سبکتکین سالور 1370-1302"},
+{ key: -150, parent: -36, name: "سنجر سالور *", "gender": "M", birthYear: "1337", deathYear: "1401", mother: "افتخار احمدی علیا", father: "سبکتکین سالور 1370-1302"},
+{ key: 148, parent: 26, name: "زهره پیشی کاظمی استن بولت", "gender": "F", birthYear: "1337", deathYear: "", mother: "ثریا فرهت سپاهی 1386-1310", father: "عزالدین کاظمی 1384-1298"},
+{ key: 151, parent: 57, name: "مزدا سالور", "gender": "M", birthYear: "1337", deathYear: "", mother: "پروین بهنگار 1398-1308", father: "مهرداد سالور 1387/05/07-1308/01/22"},
+{ key: 152, parent: 23, name: "همایون سالور", "gender": "M", birthYear: "1337", deathYear: "", mother: "مهری جلالی 1400-1314", father: "سلطان یوسف سالور 1353-1296"},
+{ key: 153, parent: 324, name: "هوری گنجه ای", "gender": "F", birthYear: "1337", deathYear: "", mother: "فرشته بیات گنجه ای 1384-", father: "فرهاد گنجه ای"},
+{ key: 154, parent: 20, name: "زهرا سالور", "gender": "F", birthYear: "1337/01/01", deathYear: "", mother: "منصوره عسکری 1395/07/19-1302", father: "منوچهر سالور 1389/10/04-1293"},
+{ key: 155, parent: 80, name: "بهزاد نوبان", "gender": "M", birthYear: "1338", deathYear: "", mother: "تابنده سالور", father: "ملک ناصر نوبان 1389-1305"},
+{ key: 157, parent: 68, name: "فیروزه فرخ ابراهیمی", "gender": "F", birthYear: "1338", deathYear: "", mother: "فرشته سالور 1399-1314", father: "غلامعلی فرخ ابراهیمی 1395-1308"},
+{ key: 159, parent: 324, name: "گلی گنجه ای", "gender": "F", birthYear: "1339", deathYear: "", mother: "فرشته بیات گنجه ای 1384-", father: "فرهاد گنجه ای"},
+{ key: 161, parent: 26, name: "محمود کاظمی", "gender": "M", birthYear: "1339", deathYear: "", mother: "ثریا فرهت سپاهی 1386-1310", father: "عزالدین کاظمی 1384-1298"},
+{ key: 166, parent: 75, name: "یاسمن رصدی", "gender": "F", birthYear: "1340", deathYear: "", mother: "ماهرو جهانسوز برنز", father: "مهدی رصدی"},
+{ key: 165, parent: 74, name: "رشید یاسمی", "gender": "M", birthYear: "1340", deathYear: "", mother: "شایسته درمشیان یاسمی 1387-1314/12/10", father: "بیژن یاسمی 1395-1304"},
+{ key: 164, parent: 44, name: "ساسان سالور", "gender": "M", birthYear: "1340", deathYear: "", mother: "منیر مقدم", father: "صلاح الدین سالور 1376-1305"},
+{ key: 167, parent: 58, name: "امیرحسین حشمتی", "gender": "M", birthYear: "1340/04/04", deathYear: "", mother: "آرا سالور 1388/11/08-1308/07/08", father: "امیرناصر حشمتی 1399-1299"},
+{ key: 168, parent: 48, name: "کتایون کوزه کنانی", "gender": "F", birthYear: "1340/08/16", deathYear: "", mother: "لعبت شیرین میرزا حسابی 1391/07/10-1307/01/07", father: "حبیب کوزه کنانی 1377/10/16-1305/01/05"},
+{ key: 169, parent: 40, name: "هلال کمره ای", "gender": "F", birthYear: "1341", deathYear: "", mother: "پروانه اردلان 1398-1303", father: "مجتبی کمره ای 1393-1303"},
+{ key: -169, parent: -40, name: "هلال کمره ای *", "gender": "F", birthYear: "1341", deathYear: "", mother: "پروانه اردلان 1398-1303", father: "مجتبی کمره ای 1393-1303"},
+{ key: 171, parent: 59, name: "بابک اردلان", "gender": "M", birthYear: "1341", deathYear: "", mother: "مهوش امیرشاهی", father: "ابوالفتح اردلان 1386/06/09-1308/07/29"},
+{ key: -171, parent: -59, name: "بابک اردلان *", "gender": "M", birthYear: "1341", deathYear: "", mother: "مهوش امیرشاهی", father: "ابوالفتح اردلان 1386/06/09-1308/07/29"},
+{ key: 170, parent: 80, name: "آذین نوبان", "gender": "F", birthYear: "1341", deathYear: "", mother: "تابنده سالور", father: "ملک ناصر نوبان 1389-1305"},
+{ key: 10002702, parent: 10002701, name: "داور سالور", "gender": "MM", birthYear: "1341", deathYear: "", mother: "", father: "کامران سالور 1374-"},
+{ key: 172, parent: 68, name: "شاهرخ فرخ ابراهیمی", "gender": "M", birthYear: "1341", deathYear: "", mother: "فرشته سالور 1399-1314", father: "غلامعلی فرخ ابراهیمی 1395-1308"},
+{ key: 174, parent: 36, name: "سحر سالور", "gender": "F", birthYear: "1342", deathYear: "", mother: "افتخار احمدی علیا", father: "سبکتکین سالور 1370-1302"},
+{ key: -174, parent: -36, name: "سحر سالور *", "gender": "F", birthYear: "1342", deathYear: "", mother: "افتخار احمدی علیا", father: "سبکتکین سالور 1370-1302"},
+{ key: 177, parent: 44, name: "کیان سالور", "gender": "M", birthYear: "1342", deathYear: "", mother: "منیر مقدم", father: "صلاح الدین سالور 1376-1305"},
+{ key: 175, parent: 10004723, name: "مهرداد سالور", "gender": "M", birthYear: "1342", deathYear: "", mother: "شهربانو کربلایی مهدی", father: "معزالدین سالور"},
+{ key: 10002703, parent: 10002701, name: "مارک سالور", "gender": "MM", birthYear: "1343", deathYear: "", mother: "", father: "کامران سالور 1374-"},
+{ key: 179, parent: 59, name: "روشنک اردلان", "gender": "F", birthYear: "1343", deathYear: "", mother: "مهوش امیرشاهی", father: "ابوالفتح اردلان 1386/06/09-1308/07/29"},
+{ key: -179, parent: -59, name: "روشنک اردلان *", "gender": "F", birthYear: "1343", deathYear: "", mother: "مهوش امیرشاهی", father: "ابوالفتح اردلان 1386/06/09-1308/07/29"},
+{ key: 178, parent: 40, name: "حسین کمره ای", "gender": "M", birthYear: "1343", deathYear: "", mother: "پروانه اردلان 1398-1303", father: "مجتبی کمره ای 1393-1303"},
+{ key: -178, parent: -40, name: "حسین کمره ای *", "gender": "M", birthYear: "1343", deathYear: "", mother: "پروانه اردلان 1398-1303", father: "مجتبی کمره ای 1393-1303"},
+{ key: 183, parent: 40, name: "حسام کمره ای", "gender": "M", birthYear: "1344", deathYear: "", mother: "پروانه اردلان 1398-1303", father: "مجتبی کمره ای 1393-1303"},
+{ key: -183, parent: -40, name: "حسام کمره ای *", "gender": "M", birthYear: "1344", deathYear: "", mother: "پروانه اردلان 1398-1303", father: "مجتبی کمره ای 1393-1303"},
+{ key: 184, parent: 48, name: "حمیرا کوزه کنانی", "gender": "F", birthYear: "1344", deathYear: "", mother: "لعبت شیرین میرزا حسابی 1391/07/10-1307/01/07", father: "حبیب کوزه کنانی 1377/10/16-1305/01/05"},
+{ key: 182, parent: 46, name: "ژویل بوکه", "gender": "M", birthYear: "1344", deathYear: "", mother: "سودابه گنجه ای", father: "فرانسوا بوکه"},
+{ key: 181, parent: 68, name: "فتانه فرخ ابراهیمی", "gender": "F", birthYear: "1344", deathYear: "", mother: "فرشته سالور 1399-1314", father: "غلامعلی فرخ ابراهیمی 1395-1308"},
+{ key: 185, parent: 57, name: "آرش سالور", "gender": "M", birthYear: "1345", deathYear: "", mother: "پروین بهنگار 1398-1308", father: "مهرداد سالور 1387/05/07-1308/01/22"},
+{ key: 186, parent: 88, name: "محمود گرانمایه", "gender": "M", birthYear: "1345", deathYear: "", mother: "مینو سالور", father: "محمد حسین گرانمایه"},
+{ key: 188, parent: 46, name: "یاسمین کاترین بوکه", "gender": "F", birthYear: "1345", deathYear: "", mother: "سودابه گنجه ای", father: "فرانسوا بوکه"},
+{ key: 189, parent: 21, name: "خسرو سالور", "gender": "M", birthYear: "1345/10/25", deathYear: "", mother: "تاجلی سالور 1390/07/05-1300/07/24", father: "عباس سالور 1389/10/19-1294/07/01"},
+{ key: -189, parent: 35, name: "خسرو سالور *", "gender": "M", birthYear: "1345/10/25", deathYear: "", mother: "تاجلی سالور 1390/07/05-1300/07/24", father: "عباس سالور 1389/10/19-1294/07/01"},
+{ key: 190, parent: 62, name: "مریم اردلان", "gender": "F", birthYear: "1345/12/08", deathYear: "", mother: "رناته بکر", father: "پرویز اردلان 1396/02/11-1309/05/10"},
+{ key: -190, parent: -62, name: "مریم اردلان *", "gender": "F", birthYear: "1345/12/08", deathYear: "", mother: "رناته بکر", father: "پرویز اردلان 1396/02/11-1309/05/10"},
+{ key: 197, parent: 88, name: "فیروزه گرانمایه", "gender": "F", birthYear: "1347", deathYear: "", mother: "مینو سالور", father: "محمدحسین گرانمایه"},
+{ key: 195, parent: 97, name: "علی غفوری", "gender": "M", birthYear: "1347", deathYear: "", mother: "فاطمه سالور", father: "محمدرضا غفوری"},
+{ key: 196, parent: 60, name: "فرناز حسابی", "gender": "F", birthYear: "1347", deathYear: "", mother: "فردوس شکرچیان", father: "عبدالحمید میرزا حسابی"},
+{ key: 198, parent: 86, name: "امین سپهری قشقایی", "gender": "M", birthYear: "1347/07/25", deathYear: "", mother: "عباسه سالور", father: "مرتضی قلی سپهری قشقایی 1395/10/24-1312/06/26"},
+{ key: -198, parent: -86, name: "امین سپهری قشقایی *", "gender": "M", birthYear: "1347/07/25", deathYear: "", mother: "عباسه سالور", father: "مرتضی قلی سپهری قشقایی 1395/10/24-1312/06/26"},
+{ key: 200, parent: 62, name: "کامران اردلان", "gender": "M", birthYear: "1348/08/17", deathYear: "", mother: "رناته بکر", father: "پرویز اردلان 1396/02/11-1309/05/10"},
+{ key: -200, parent: -62, name: "کامران اردلان *", "gender": "M", birthYear: "1348/08/17", deathYear: "", mother: "رناته بکر", father: "پرویز اردلان 1396/02/11-1309/05/10"},
+{ key: 202, parent: 23, name: "علیرضا سالور", "gender": "M", birthYear: "1349", deathYear: "", mother: "مهری جلالی 1400-1314", father: "سلطان یوسف سالور 1353-1296"},
+{ key: 205, parent: 97, name: "فیروزه غفوری", "gender": "F", birthYear: "1350/09/08", deathYear: "", mother: "فاطمه سالور", father: "محمدرضا غفوری"},
+{ key: 206, parent: 60, name: "علی حسابی", "gender": "M", birthYear: "1351", deathYear: "", mother: "فردوس شکرچیان", father: "عبدالحمید میرزا حسابی"},
+{ key: 208, parent: 50, name: "ستاره سالور", "gender": "F", birthYear: "1351/01/17", deathYear: "", mother: "مهین دخت محمودیان", father: "کیومرث سالور"},
+{ key: 209, parent: 86, name: "هرمز سپهری قشقایی", "gender": "M", birthYear: "1351/02/20", deathYear: "", mother: "عباسه سالور", father: "مرتضی قلی سپهری قشقایی 1395/10/24-1312/06/26"},
+{ key: -209, parent: -86, name: "هرمز سپهری قشقایی *", "gender": "M", birthYear: "1351/02/20", deathYear: "", mother: "عباسه سالور", father: "مرتضی قلی سپهری قشقایی 1395/10/24-1312/06/26"},
+{ key: 210, parent: 93, name: "سحر برومند", "gender": "F", birthYear: "1352", deathYear: "", mother: "نفیسه میرزا حسابی", father: "امین الله برومند 1401/05/08-1314"},
+{ key: 211, parent: 97, name: "احمد غفوری", "gender": "M", birthYear: "1353", deathYear: "", mother: "فاطمه سالور", father: "محمدرضا غفوری"},
+{ key: 10003402, parent: 95, name: "مریم سالور", "gender": "FF", birthYear: "1353", deathYear: "", mother: "معصومه قوام", father: "ایرج سالور"},
+{ key: 215, parent: 118, name: "مهدی سالور", "gender": "M", birthYear: "1354", deathYear: "", mother: "زهرا شقاقی ضرغامی", father: "محمد سالور"},
+{ key: 216, parent: 73, name: "امیر مظفر سالور", "gender": "M", birthYear: "1354", deathYear: "", mother: "صدیقه نوروزی", father: "عطاءالله سالور"},
+{ key: 219, parent: 121, name: "علی رحیمی دانش", "gender": "M", birthYear: "1355", deathYear: "", mother: "مهوش سالور", father: "بیژن رحیمی دانش 1394-1327"},
+{ key: 221, parent: 65, name: "سپهر سالور", "gender": "M", birthYear: "1356", deathYear: "", mother: "جمیله درویش آقاجانی", father: "حسینقلی سالور 1393-1312"},
+{ key: 222, parent: 111, name: "نیناز سالور", "gender": "F", birthYear: "1356/03/11", deathYear: "", mother: "السی ماری", father: "سلطان علی سالور"},
+{ key: 223, parent: 104, name: "رضا سالور", "gender": "M", birthYear: "1356/04/05", deathYear: "", mother: "طلایه درمیشیان", father: "سلطان حسین سالور"},
+{ key: -223, parent: -104, name: "رضا سالور *", "gender": "M", birthYear: "1356/04/05", deathYear: "", mother: "طلایه درمیشیان", father: "سلطان حسین سالور"},
+{ key: 224, parent: 60, name: "رضا حسابی", "gender": "M", birthYear: "1357", deathYear: "", mother: "فردوس شکرچیان", father: "عبدالحمید میرزا حسابی"},
+{ key: 225, parent: 100, name: "پیاووش سالور", "gender": "M", birthYear: "1357", deathYear: "", mother: "شهرزاد سالور", father: "کاوه"},
+{ key: 10003404, parent: 95, name: "کامران سالور", "gender": "MM", birthYear: "1357", deathYear: "", mother: "معصومه قوام", father: "ایرج سالور"},
+{ key: 228, parent: 121, name: "مریم رحیمی دانش", "gender": "F", birthYear: "1357", deathYear: "", mother: "مهوش سالور", father: "بیژن رحیمی دانش 1394-1327"},
+{ key: 231, parent: 104, name: "نیلوفر سالور", "gender": "F", birthYear: "1358", deathYear: "", mother: "طلایه درمیشیان", father: "سلطان حسین سالور"},
+{ key: -231, parent: -104, name: "نیلوفر سالور *", "gender": "F", birthYear: "1358", deathYear: "", mother: "طلایه درمیشیان", father: "سلطان حسین سالور"},
+{ key: 229, parent: 93, name: "سپیده برومند", "gender": "F", birthYear: "1358", deathYear: "", mother: "نفیسه میرزا حسابی", father: "امین الله برومند 1401/05/08-1314"},
+{ key: 230, parent: 118, name: "سارا سالور", "gender": "F", birthYear: "1358", deathYear: "", mother: "زهرا شقاقی ضرغامی", father: "محمد سالور"},
+{ key: 232, parent: 94, name: "ارسلان سالور", "gender": "M", birthYear: "1358/02/06", deathYear: "", mother: "الهه عسکری", father: "رضاقلی سالور"},
+{ key: 236, parent: 29, name: "سوزان گنجه ای", "gender": "F", birthYear: "1359/02/19", deathYear: "", mother: "سیمین دخت فضل اللهی", father: "ناصرالدین گنجه ای"},
+{ key: 237, parent: 94, name: "اردوان سالور", "gender": "M", birthYear: "1360", deathYear: "", mother: "الهه عسکری", father: "رضاقلی سالور"},
+{ key: 238, parent: 133, name: "پیوند امیدی", "gender": "F", birthYear: "1360", deathYear: "", mother: "سپیده سالور", father: "تورج امیدی"},
+{ key: -238, parent: -133, name: "پیوند امیدی *", "gender": "F", birthYear: "1360", deathYear: "", mother: "سپیده سالور", father: "تورج امیدی"},
+{ key: 239, parent: 111, name: "شیرین روشن سالور", "gender": "F", birthYear: "1360/11/22", deathYear: "", mother: "السی ماری", father: "سلطان علی سالور"},
+{ key: 240, parent: 65, name: "نوشین سالور", "gender": "F", birthYear: "1360/12/14", deathYear: "", mother: "جمیله درویش آقاجانی", father: "حسینقلی سالور 1393-1312"},
+{ key: 242, parent: 154, name: "شروین شکرچیان", "gender": "M", birthYear: "1361", deathYear: "", mother: "زهرا سالور", father: "اکبر شکرچیان"},
+{ key: 241, parent: 93, name: "سعید برومند", "gender": "M", birthYear: "1361", deathYear: "", mother: "نفیسه میرزا حسابی", father: "امین الله برومند 1401/05/08-1314"},
+{ key: 245, parent: 113, name: "ارغوان کوزه کنانی", "gender": "F", birthYear: "1362", deathYear: "", mother: "ترانه بهرامی", father: "شهریار کوزه کنانی"},
+{ key: 247, parent: 79, name: "پونه دادجو", "gender": "F", birthYear: "1363", deathYear: "", mother: "پرتو سیاح سپانلو", father: "فرزاد دادجو"},
+{ key: 246, parent: 102, name: "پری ناز قره گزلو", "gender": "F", birthYear: "1363", deathYear: "", mother: "ژاله باختر", father: "نادر قره گزلو"},
+{ key: 249, parent: 133, name: "نیما امیدی", "gender": "M", birthYear: "1363", deathYear: "", mother: "سپیده سالور", father: "تورج امیدی"},
+{ key: -249, parent: -133, name: "نیما امیدی *", "gender": "M", birthYear: "1363", deathYear: "", mother: "سپیده سالور", father: "تورج امیدی"},
+{ key: 250, parent: 127, name: "صنم سالور", "gender": "F", birthYear: "1363/03/03", deathYear: "", mother: "شبنم جلیلوند رضائی", father: "قهرمان سالور"},
+{ key: 251, parent: 73, name: "فرهاد سالور", "gender": "M", birthYear: "1363/10/19", deathYear: "", mother: "صدیقه نوروزی", father: "عطاءالله سالور"},
+{ key: 253, parent: 157, name: "شیدا ربیع زاده", "gender": "F", birthYear: "1365", deathYear: "", mother: "فیروزه فرخ ابراهیمی", father: "سهیل ربیع زاده"},
+{ key: 254, parent: 79, name: "پریسا دادجو", "gender": "F", birthYear: "1365", deathYear: "", mother: "پرتو سیاح سپانلو", father: "فرزاد دادجو"},
+{ key: 255, parent: 166, name: "کامران شیرازی", "gender": "M", birthYear: "1365", deathYear: "", mother: "یاسمن رصدی", father: "عبدی شیرازی"},
+{ key: 252, parent: 84, name: "مهسا سالور", "gender": "F", birthYear: "1365", deathYear: "", mother: "گیتا نوروزی", father: "شاهرخ سالور"},
+{ key: 256, parent: 102, name: "احمد پورجوادی", "gender": "M", birthYear: "1366", deathYear: "", mother: "ژاله باختر", father: "نصرالله پورجوادی"},
+{ key: 258, parent: 118, name: "سمیرا سالور", "gender": "F", birthYear: "1366", deathYear: "", mother: "زهرا شقاقی ضرغامی", father: "محمد سالور"},
+{ key: 257, parent: 141, name: "شراره خدابخش", "gender": "F", birthYear: "1366", deathYear: "", mother: "آذر سالور", father: "فرامرز خدابخش"},
+{ key: 259, parent: 130, name: "نرگس اقدایی", "gender": "F", birthYear: "1366/11/30", deathYear: "", mother: "مریم سالور", father: "هوشنگ اقدایی"},
+{ key: -259, parent: -130, name: "نرگس اقدایی *", "gender": "F", birthYear: "1366/11/30", deathYear: "", mother: "مریم سالور", father: "هوشنگ اقدایی"},
+{ key: 261, parent: 166, name: "لیلی شیرازی بیتز", "gender": "F", birthYear: "1367", deathYear: "", mother: "یاسمن رصدی", father: "عبدی شیرازی"},
+{ key: 260, parent: 154, name: "شارمین شکرچیان", "gender": "F", birthYear: "1367", deathYear: "", mother: "زهرا سالور", father: "اکبر شکرچیان"},
+{ key: 10004004, parent: 10004003, name: "شیرین سالور", "gender": "FF", birthYear: "1367", deathYear: "", mother: "Gail", father: "هرمز سالور"},
+{ key: 262, parent: 84, name: "جمشید سالور", "gender": "M", birthYear: "1367", deathYear: "", mother: "گیتا نوروزی", father: "شاهرخ سالور"},
+{ key: 264, parent: 181, name: "علی عبدالرسول", "gender": "M", birthYear: "1368", deathYear: "", mother: "فتانه فرخ ابراهیمی", father: "مجید عبدالرسول"},
+{ key: 263, parent: 147, name: "سپیده بهروزی", "gender": "F", birthYear: "1368", deathYear: "", mother: "ترانه سالور", father: "سعید بهروزی"},
+{ key: -263, parent: -147, name: "سپیده بهروزی *", "gender": "F", birthYear: "1368", deathYear: "", mother: "ترانه سالور", father: "سعید بهروزی"},
+{ key: 265, parent: 127, name: "سهراب سالور", "gender": "M", birthYear: "1368/05/30", deathYear: "", mother: "شبنم جلیلوند رضائی", father: "قهرمان سالور"},
+{ key: 10004005, parent: 10004003, name: "شادی سالور", "gender": "FF", birthYear: "1369", deathYear: "", mother: "Gail", father: "هرمز سالور"},
+{ key: 266, parent: 117, name: "سحر حجة الاسلام قمی", "gender": "F", birthYear: "1369", deathYear: "", mother: "آزاده سالور", father: "احمد رضا حجة الاسلام قمی"},
+{ key: -266, parent: -117, name: "سحر حجة الاسلام قمی *", "gender": "F", birthYear: "1369", deathYear: "", mother: "آزاده سالور", father: "احمد رضا حجة الاسلام قمی"},
+{ key: 267, parent: 148, name: "دیانا استن بولت", "gender": "F", birthYear: "1370", deathYear: "", mother: "زهره پیشی کاظمی استن بولت", father: "اویویند گوستاو استن بولت"},
+{ key: 268, parent: 136, name: "سام سالور", "gender": "M", birthYear: "1370/09/29", deathYear: "", mother: "ناهید محمدپور دهکردی", father: "فریدون سالور 1383/04/31-1334/02/28"},
+{ key: 269, parent: 167, name: "گلنوش حشمتی", "gender": "F", birthYear: "1371", deathYear: "", mother: "گلبرگ برزین", father: "امیرحسین حشمتی"},
+{ key: 270, parent: 145, name: "سامان سالور", "gender": "M", birthYear: "1371/11/15", deathYear: "", mother: "مژگان نبوی", father: "کسری سالور"},
+{ key: 271, parent: 140, name: "امیرهومن حشمتی", "gender": "M", birthYear: "1372", deathYear: "", mother: "شیرین رحیمی", father: "امیرحسن حشمتی"},
+{ key: 272, parent: 179, name: "کامران علوی", "gender": "M", birthYear: "1372", deathYear: "", mother: "روشنک اردلان", father: "حمید علوی"},
+{ key: -272, parent: -179, name: "کامران علوی *", "gender": "M", birthYear: "1372", deathYear: "", mother: "روشنک اردلان", father: "حمید علوی"},
+{ key: 273, parent: 137, name: "یاسمین عضدی", "gender": "F", birthYear: "1372", deathYear: "", mother: "مریم حمزه عضدی", father: "جهانگیر جانی عضدی"},
+{ key: 274, parent: 181, name: "آندیا عبدالرسول", "gender": "F", birthYear: "1373", deathYear: "", mother: "فتانه فرخ ابراهیمی", father: "مجید عبدالرسول"},
+{ key: 275, parent: 197, name: "جانیز شایان انگست", "gender": "F", birthYear: "1373", deathYear: "", mother: "فیروزه گرانمایه", father: "بات انگست"},
+{ key: 10004006, parent: 10004003, name: "شعر سالور", "gender": "FF", birthYear: "1373", deathYear: "", mother: "Gail", father: "هرمز سالور"},
+{ key: 10002402, parent: 164, name: "دارا سالور", "gender": "MM", birthYear: "1374", deathYear: "", mother: "", father: "ساسان سالور"},
+{ key: 276, parent: 179, name: "کیان اردلان علوی", "gender": "M", birthYear: "1374", deathYear: "", mother: "روشنک اردلان", father: "حمید علوی"},
+{ key: -276, parent: -179, name: "کیان اردلان علوی *", "gender": "M", birthYear: "1374", deathYear: "", mother: "روشنک اردلان", father: "حمید علوی"},
+{ key: 277, parent: 137, name: "نیکی عضدی", "gender": "F", birthYear: "1375", deathYear: "", mother: "مریم حمزه عضدی", father: "جهانگیر جانی عضدی"},
+{ key: 278, parent: 197, name: "جیسون شاهین انگست", "gender": "M", birthYear: "1375", deathYear: "", mother: "فیروزه گرانمایه", father: "بات انگست"},
+{ key: 279, parent: 132, name: "سارا برادران جوادی", "gender": "F", birthYear: "1375", deathYear: "", mother: "لادن یاسمی برادران جوادی", father: "مهران سعید برادران جوادی"},
+{ key: 280, parent: 146, name: "امان اردلان", "gender": "M", birthYear: "1375/03/17", deathYear: "", mother: "ایران اردلان", father: "فرخ اردلان"},
+{ key: -280, parent: -146, name: "امان اردلان *", "gender": "M", birthYear: "1375/03/17", deathYear: "", mother: "ایران اردلان", father: "فرخ اردلان"},
+{ key: 281, parent: 148, name: "ثریا استن بولت", "gender": "F", birthYear: "1376", deathYear: "", mother: "زهره پیشی کاظمی استن بولت", father: "اویویند گوستاو استن بولت"},
+{ key: 282, parent: 148, name: "کیان استن بولت", "gender": "M", birthYear: "1376", deathYear: "", mother: "زهره پیشی کاظمی استن بولت", father: "اویویند گوستاو استن بولت"},
+{ key: 284, parent: 171, name: "لیلی اردلان", "gender": "F", birthYear: "1377", deathYear: "", mother: "شادی سابتیان", father: "بابک اردلان"},
+{ key: -284, parent: -171, name: "لیلی اردلان *", "gender": "F", birthYear: "1377", deathYear: "", mother: "شادی سابتیان", father: "بابک اردلان"},
+{ key: 283, parent: 186, name: "جیمی گرانمایه", "gender": "M", birthYear: "1377", deathYear: "", mother: "کیانوش پورطوسی", father: "محمود گرانمایه"},
+{ key: 285, parent: 146, name: "امیر اردلان", "gender": "M", birthYear: "1377/07/29", deathYear: "", mother: "ایران اردلان", father: "فرخ اردلان"},
+{ key: -285, parent: -146, name: "امیر اردلان *", "gender": "M", birthYear: "1377/07/29", deathYear: "", mother: "ایران اردلان", father: "فرخ اردلان"},
+{ key: 286, parent: 188, name: "رافائل بروتی", "gender": "M", birthYear: "1378", deathYear: "", mother: "یاسمین کاترین بوکه", father: "ماتیو بروتی"},
+{ key: 100046, parent: 205, name: "فراز پرتوی", "gender": "MM", birthYear: "1378", deathYear: "", mother: "فیروزه غفوری", father: "فرهاد پرتوی"},
+{ key: 287, parent: 126, name: "شادی حشمتی", "gender": "F", birthYear: "1378/07/19", deathYear: "", mother: "شیده امیرمعذی", father: "امیرمحسن حشمتی"},
+{ key: 288, parent: 165, name: "آریا یاسمی", "gender": "M", birthYear: "1379", deathYear: "", mother: "فرزانه سیادت پور یاسمی", father: "رشید یاسمی"},
+{ key: 289, parent: 175, name: "نگین سالور", "gender": "F", birthYear: "1379", deathYear: "", mother: "افتخار مدنی", father: "مهرداد سالور#"},
+{ key: 290, parent: 170, name: "کامران وثیق", "gender": "M", birthYear: "1380", deathYear: "", mother: "آذین نوبان", father: "علیرضا وثیق"},
+{ key: 10004010, parent: 10004009, name: "گلنوش زواره ای", "gender": "FF", birthYear: "1380/08/30", deathYear: "", mother: "نوشین سالور#", father: "بیژن زواره ای"},
+{ key: 291, parent: 171, name: "نینا اردلان", "gender": "F", birthYear: "1382", deathYear: "", mother: "شادی سابتیان", father: "بابک اردلان"},
+{ key: -291, parent: -171, name: "نینا اردلان *", "gender": "F", birthYear: "1382", deathYear: "", mother: "شادی سابتیان", father: "بابک اردلان"},
+{ key: 292, parent: 189, name: "آدریا سالور", "gender": "F", birthYear: "1382/06/15", deathYear: "", mother: "سایه اقتصادی نیا", father: "خسرو سالور"},
+{ key: -292, parent: -189, name: "آدریا سالور *", "gender": "F", birthYear: "1382/06/15", deathYear: "", mother: "سایه اقتصادی نیا", father: "خسرو سالور"},
+{ key: 293, parent: 188, name: "مارتن جهان بروتی", "gender": "M", birthYear: "1383", deathYear: "", mother: "یاسمین کاترین بوکه", father: "ماتیو بروتی"},
+{ key: 294, parent: 165, name: "تارا یاسمی", "gender": "F", birthYear: "1384", deathYear: "", mother: "فرزانه سیادت پور یاسمی", father: "رشید یاسمی"},
+{ key: 295, parent: 172, name: "آرش فرخ ابراهیمی", "gender": "M", birthYear: "1386", deathYear: "", mother: "سپیده ملک قاسمی", father: "شاهرخ فرخ ابراهیمی"},
+{ key: 10003405, parent: 10003404, name: "سلین سالور", "gender": "FF", birthYear: "1386", deathYear: "", mother: "", father: "کامران سالور#"},
+{ key: 296, parent: 178, name: "کورش کمره ای", "gender": "M", birthYear: "1386", deathYear: "", mother: "مریم انصاری", father: "حسین کمره ای"},
+{ key: -296, parent: -178, name: "کورش کمره ای *", "gender": "M", birthYear: "1386", deathYear: "", mother: "مریم انصاری", father: "حسین کمره ای"},
+{ key: 299, parent: 195, name: "شارلین غفوری", "gender": "F", birthYear: "1387", deathYear: "", mother: "شراره قهرمانی", father: "علی غفوری"},
+{ key: 297, parent: 210, name: "باربد طبیبی گیلانی", "gender": "M", birthYear: "1387", deathYear: "", mother: "سحر برومند", father: "نیوشا طبیبی گیلانی"},
+{ key: 298, parent: 229, name: "بردیا بیدآبادی", "gender": "M", birthYear: "1387", deathYear: "", mother: "سپیده برومند", father: "سامان بیدآبادی"},
+{ key: 10002704, parent: 221, name: "رادمان سالور", "gender": "MM", birthYear: "1388", deathYear: "", mother: "باران نجاتی", father: "سپهر سالور"},
+{ key: 10003406, parent: 10003404, name: "سیدنی سالور", "gender": "FF", birthYear: "1388", deathYear: "", mother: "", father: "کامران سالور#"},
+{ key: 300, parent: 230, name: "ساوین صفابخش", "gender": "F", birthYear: "1388", deathYear: "", mother: "سارا سالور", father: "سیامک صفابخش"},
+{ key: 301, parent: 216, name: "داریو سالور", "gender": "M", birthYear: "1389", deathYear: "", mother: "شقایق کریمی روزبهانی", father: "امیر مظفر سالور"},
+{ key: 302, parent: 224, name: "مسیحا حسابی", "gender": "M", birthYear: "1389", deathYear: "", mother: "شهزاد عوض پور", father: "رضا حسابی"},
+{ key: 304, parent: 229, name: "پوریا بیدآبادی", "gender": "M", birthYear: "1390", deathYear: "", mother: "سپیده برومند", father: "سامان بیدآبادی"},
+{ key: 303, parent: 195, name: "شارلت غفوری", "gender": "F", birthYear: "1390", deathYear: "", mother: "شراره قهرمانی", father: "علی غفوری"},
+{ key: 305, parent: 202, name: "روهام سالور", "gender": "M", birthYear: "1391", deathYear: "", mother: "فرناز نبوی", father: "علیرضا سالور"},
+{ key: 306, parent: 202, name: "مانلی سالور", "gender": "F", birthYear: "1391", deathYear: "", mother: "فرناز نبوی", father: "علیرضا سالور"},
+{ key: 307, parent: 224, name: "سپنتا حسابی", "gender": "M", birthYear: "1392", deathYear: "", mother: "شهزاد عوض پور", father: "رضا حسابی"},
+{ key: 308, parent: 215, name: "آوا سالور", "gender": "F", birthYear: "1392", deathYear: "", mother: "سها کوچک", father: "مهدی سالور"},
+{ key: 10003407, parent: 10003404, name: "اسکایلر سالور", "gender": "FF", birthYear: "1392", deathYear: "", mother: "", father: "کامران سالور#"},
+{ key: 309, parent: 239, name: "ایوان رایان اولسن", "gender": "M", birthYear: "1392/11/21", deathYear: "", mother: "شیرین روشن سالور", father: "پل اولسن"},
+{ key: 310, parent: 178, name: "کیان کمره ای", "gender": "M", birthYear: "1393", deathYear: "", mother: "مریم انصاری", father: "حسین کمره ای"},
+{ key: -310, parent: -178, name: "کیان کمره ای *", "gender": "M", birthYear: "1393", deathYear: "", mother: "مریم انصاری", father: "حسین کمره ای"},
+{ key: 311, parent: 258, name: "نیکی ملو", "gender": "F", birthYear: "1394", deathYear: "", mother: "سمیرا سالور", father: "ماریز ملو فورمیگا ویانا"},
+{ key: 312, parent: 230, name: "ساینا صفابخش", "gender": "F", birthYear: "1395", deathYear: "", mother: "سارا سالور", father: "سیامک صفابخش"},
+{ key: 313, parent: 215, name: "سام راد سالور", "gender": "M", birthYear: "1395", deathYear: "", mother: "سها کوچک", father: "مهدی سالور"},
+{ key: 314, parent: 237, name: "سهند سالور", "gender": "M", birthYear: "1395", deathYear: "", mother: "سپیده ملکی", father: "اردوان سالور"},
+{ key: 315, parent: 206, name: "لیام حسابی", "gender": "M", birthYear: "1397", deathYear: "", mother: "شیما دادور", father: "علی حسابی"},
+{ key: 316, parent: 206, name: "لیو حسابی", "gender": "M", birthYear: "1399", deathYear: "", mother: "شیما دادور", father: "علی حسابی"},
+{ key: 317, parent: 242, name: "سلین شکرچیان", "gender": "F", birthYear: "1399", deathYear: "", mother: "صدف تقویان", father: "شروین شکرچیان"},
+{ key: 318, parent: 238, name: "سبک فلیپ فرالیک", "gender": "M", birthYear: "1399", deathYear: "", mother: "پیوند امیدی", father: "ناتان فرالیک"},
+{ key: -318, parent: -238, name: "سبک فلیپ فرالیک *", "gender": "M", birthYear: "1399", deathYear: "", mother: "پیوند امیدی", father: "ناتان فرالیک"},
+{ key: 10004014, parent: 10004002, name: "لینا فارینا", "gender": "FF", birthYear: "1399/06/10", deathYear: "", mother: "", father: "بردیا سالور"},
+{ key: 319, parent: 261, name: "آلیور رایان بیتز", "gender": "M", birthYear: "1400", deathYear: "", mother: "لیلی شیرازی بیتز", father: "جاشوا جان بیتز"},
+{ key: 320, parent: 251, name: "کیان سالور", "gender": "M", birthYear: "1401", deathYear: "", mother: "سوزان", father: "فرهاد سالور"},
+{ key: 100011000, parent: 241, name: "نویان برومند", "gender": "MM", birthYear: "1401/05/08", deathYear: "", mother: "ندا منجی", father: "سعید برومند"},
+
+
+	
+         ];
+         
+         // create the model for the family tree
+         myDiagram.model = new go.TreeModel(nodeDataArray);
+         myDiagram.scale = 0.4;
+         
+         document.getElementById('screenshot').addEventListener('click', function() {
+          screenshot();
+         });
+         document.getElementById('zoomToFit').addEventListener('click', function() {
+         myDiagram.commandHandler.zoomToFit();
+         });
+         
+         document.getElementById('zoomout').addEventListener('click', function() {
+         if (myDiagram.scale >= 0.1)
+         myDiagram.scale = myDiagram.scale - 0.05;
+         });
+         
+         document.getElementById('zoomin').addEventListener('click', function() {
+         myDiagram.scale = myDiagram.scale + 0.05;
+         //myDiagram.scale = 1;
+         });
+         
+         document.getElementById('clear').addEventListener('click', function() {
+         const selected = document.querySelector('#SelectName');
+         selected.value = "";
+         selected.focus();
+         });
+         
+         document.getElementById('find').addEventListener('click', function() {
+         if (myDiagram.scale < 0.5)
+         myDiagram.scale = 0.7;
+         const selected = document.querySelector('#SelectName');
+         var x = document.getElementById("SelectName");
+         
+         myDiagram.scrollToRect(myDiagram.findNodeForKey(selected.value).actualBounds);
+         
+         var data= myDiagram.model.findNodeDataForKey(selected.value);
+         var node = myDiagram.findNodeForData(data);
+         myDiagram.centerRect(node.actualBounds);
+         myDiagram.select(node);
+         selected.value=data.name;
+         });
+         
+         document.getElementById('SelectName').addEventListener("keyup", function(event) {
+         
+         // Number 13 is the "Enter" key on the keyboard
+         if (event.keyCode === 13) {
+         // Cancel the default action, if needed
+         event.preventDefault();
+         // Trigger the button element with a click
+         document.getElementById("find").click();
+         }
+         });
+         
+         }
+         window.addEventListener('DOMContentLoaded', init);
+		 window.onload = function() {
+			var reloading = sessionStorage.getItem("reloading");
+			if (reloading) {
+				sessionStorage.removeItem("reloading");
+				runScreenshot();
+			}
+		 }
+         var delayInMilliseconds = 3000; //3 second
+         
+         setTimeout(function() {
+         //your code to be executed after delay
+         document.getElementById("SelectName").value = '1000110';
+         var x = document.getElementById("find");
+         console.log(x);
+         x.click();
+         document.getElementById("find").click();
+         }, delayInMilliseconds);
+         
+      </script>
+      <table style="border: 1px solid black;" align="center" width="100%">
+         <tr>
+            <td width="20%"></td>
+            <td align="center">
+               <input id="SelectName" style="width:230px;font-size: 12px;" type="text" dir="rtl" list="names" placeholder="پس از Clear، نام فرد را وارد کنید">
+               <button id="clear">Clear</button>
+               <button id="find">Find</button>
+            </td>
+            <td width="20%" align="right">
+               <button id="screenshot">Screenshot</button><button id="zoomToFit">Zoom to Fit</button><button id="zoomout">-</button><button id="zoomin">+</button>
+            </td>
+         </tr>
+      </table>
+      <datalist id="names">
+<option value="292">آدریا سالور</option>
+<option value="-292">آدریا سالور *</option>
+<option value="141">آذر سالور</option>
+<option value="1000473">آذر سیادت</option>
+<option value="1000163">آذر شاهزاده نصیرالدوله</option>
+<option value="170">آذین نوبان</option>
+<option value="58">آرا سالور</option>
+<option value="10003703">آراسته ریحانی</option>
+<option value="185">آرش سالور</option>
+<option value="295">آرش فرخ ابراهیمی</option>
+<option value="288">آریا یاسمی</option>
+<option value="10003704">آریتز مولر ریحانی</option>
+<option value="117">آزاده سالور</option>
+<option value="-117">آزاده سالور *</option>
+<option value="100065">آقا محمد خان قاجار</option>
+<option value="319">آلیور رایان بیتز</option>
+<option value="274">آندیا عبدالرسول</option>
+<option value="308">آوا سالور</option>
+<option value="100047">ابتهاج الملوک اردلان</option>
+<option value="59">ابوالفتح اردلان</option>
+<option value="-59">ابوالفتح اردلان *</option>
+<option value="10001634">ابوالقاسم بدر</option>
+<option value="256">احمد پورجوادی</option>
+<option value="10004303">احمد سالور</option>
+<option value="211">احمد غفوری</option>
+<option value="237">اردوان سالور</option>
+<option value="232">ارسلان سالور</option>
+<option value="245">ارغوان کوزه کنانی</option>
+<option value="10001613">اسدالله سالور</option>
+<option value="10">اسماعیل امیرشاهی</option>
+<option value="10003407">اسکایلر سالور</option>
+<option value="10001615">افسرالملوک سالور</option>
+<option value="10002902">اقدس گنجه ای</option>
+<option value="116">الهه عضدی</option>
+<option value="-2280">امان اردلان*</option>
+<option value="280">امان اردلان</option>
+<option value="-280">امان اردلان *</option>
+<option value="6">امان الله اردلان عزالممالک</option>
+<option value="-2285">امیر اردلان*</option>
+<option value="285">امیر اردلان</option>
+<option value="-285">امیر اردلان *</option>
+<option value="37">امیر شاپور سیادت</option>
+<option value="216">امیر مظفر سالور</option>
+<option value="140">امیرحسن حشمتی</option>
+<option value="167">امیرحسین حشمتی</option>
+<option value="10004800">امیرروزبه فرهنگ</option>
+<option value="10004801">امیرعلی فرهنگ</option>
+<option value="126">امیرمحسن حشمتی</option>
+<option value="271">امیرهومن حشمتی</option>
+<option value="198">امین سپهری قشقایی</option>
+<option value="-198">امین سپهری قشقایی *</option>
+<option value="10004501">انوشیروان سالور</option>
+<option value="1000150">انوشیروان میرزا</option>
+<option value="100011012">ایرج اعتضادی</option>
+<option value="95">ایرج سالور</option>
+<option value="309">ایوان رایان اولسن</option>
+<option value="171">بابک اردلان</option>
+<option value="-2171">بابک اردلان*</option>
+<option value="-171">بابک اردلان *</option>
+<option value="10009000">بابک ربوبی</option>
+<option value="297">باربد طبیبی گیلانی</option>
+<option value="298">بردیا بیدآبادی</option>
+<option value="10004002">بردیا سالور</option>
+<option value="10004305">بهرام سالور</option>
+<option value="122">بهرام سیادت</option>
+<option value="155">بهزاد نوبان</option>
+<option value="1000191">بهمن</option>
+<option value="31">بهمن سالور</option>
+<option value="100011010">بیژن اعتضادی</option>
+<option value="100010002">پاتریک</option>
+<option value="40">پروانه اردلان</option>
+<option value="-40">پروانه اردلان *</option>
+<option value="62">پرویز اردلان</option>
+<option value="-62">پرویز اردلان *</option>
+<option value="10004008">پرویز سالور</option>
+<option value="1000420">پرویز سالور</option>
+<option value="10004708">پروین کاظمی</option>
+<option value="56">پری اردلان مالک</option>
+<option value="10001647">پری چهر امیرشاهی</option>
+<option value="27">پری رخ گنجه ای</option>
+<option value="246">پری ناز قره گزلو</option>
+<option value="254">پریسا دادجو</option>
+<option value="10001629">پریناز اردلان</option>
+<option value="1000190">پریوش احترام الدوله</option>
+<option value="149">پریوش سالور</option>
+<option value="1000472">پوران سیادت</option>
+<option value="304">پوریا بیدآبادی</option>
+<option value="247">پونه دادجو</option>
+<option value="225">پیاووش سالور</option>
+<option value="238">پیوند امیدی</option>
+<option value="-238">پیوند امیدی *</option>
+<option value="80">تابنده سالور</option>
+<option value="10004502">تاتیانا سالور</option>
+<option value="35">تاجلی سالور</option>
+<option value="294">تارا یاسمی</option>
+<option value="10009002">تام ربوبی</option>
+<option value="147">ترانه سالور</option>
+<option value="-147">ترانه سالور *</option>
+<option value="100011011">تورج اعتضادی</option>
+<option value="10004709">توری کاظمی</option>
+<option value="281">ثریا استن بولت</option>
+<option value="10004007">ثریا سالور</option>
+<option value="1000166">جانجان سالور</option>
+<option value="275">جانیز شایان انگست</option>
+<option value="262">جمشید سالور</option>
+<option value="10003702">جمشید منتظم کیا</option>
+<option value="123">جمشید یاسمی</option>
+<option value="137">جهانگیر جانی عضدی</option>
+<option value="10004710">جواد کاظمی</option>
+<option value="278">جیسون شاهین انگست</option>
+<option value="283">جیمی گرانمایه</option>
+<option value="183">حسام کمره ای</option>
+<option value="-183">حسام کمره ای *</option>
+<option value="10000">حسین خان زیاد اوغلی قاجار</option>
+<option value="10001651">حسین خواجه نوری</option>
+<option value="178">حسین کمره ای</option>
+<option value="-178">حسین کمره ای *</option>
+<option value="100011009">حسینعلی اعتضادی</option>
+<option value="100070">حسینقلی خان جهانسوز شاه</option>
+<option value="65">حسینقلی سالور</option>
+<option value="4">حسینقلی میرزا عمادالسلطنه</option>
+<option value="1000170">حمید سلطان</option>
+<option value="184">حمیرا کوزه کنانی</option>
+<option value="11">حورالعین قمرالدوله</option>
+<option value="105">خسرو باختر</option>
+<option value="189">خسرو سالور</option>
+<option value="-189">خسرو سالور *</option>
+<option value="10001654">دارا خواجه نوری</option>
+<option value="10002402">دارا سالور</option>
+<option value="10004304">دارا سالور</option>
+<option value="301">داریو سالور</option>
+<option value="135">داریوش سیادت</option>
+<option value="100011007">داود اعتضادی</option>
+<option value="10004711">داود کاظمی</option>
+<option value="10002702">داور سالور</option>
+<option value="139">دردانه باختر</option>
+<option value="267">دیانا استن بولت</option>
+<option value="10009001">رائین ربوبی</option>
+<option value="10002704">رادمان سالور</option>
+<option value="10002401">رادین صفوی</option>
+<option value="286">رافائل بروتی</option>
+<option value="10003403">رایان رضا هاشمی</option>
+<option value="165">رشید یاسمی</option>
+<option value="10001644">رضا امیرشاهی</option>
+<option value="224">رضا حسابی</option>
+<option value="223">رضا سالور</option>
+<option value="-223">رضا سالور *</option>
+<option value="10001622">رضاقلی اردلان</option>
+<option value="94">رضاقلی سالور</option>
+<option value="179">روشنک اردلان</option>
+<option value="-2179">روشنک اردلان*</option>
+<option value="-179">روشنک اردلان *</option>
+<option value="15">روشنک سالور</option>
+<option value="305">روهام سالور</option>
+<option value="154">زهرا سالور</option>
+<option value="10003603">زهره باختر</option>
+<option value="148">زهره پیشی کاظمی استن بولت</option>
+<option value="10004717">زهره سالور</option>
+<option value="12">زینب عین الملوک سالور</option>
+<option value="10001602">زینت سلطنه حسابی</option>
+<option value="102">ژاله باختر</option>
+<option value="182">ژویل بوکه</option>
+<option value="87">ژینوس امیرشاهی</option>
+<option value="279">سارا برادران جوادی</option>
+<option value="230">سارا سالور</option>
+<option value="164">ساسان سالور</option>
+<option value="10004719">ساسان سالور</option>
+<option value="313">سام راد سالور</option>
+<option value="268">سام سالور</option>
+<option value="270">سامان سالور</option>
+<option value="300">ساوین صفابخش</option>
+<option value="312">ساینا صفابخش</option>
+<option value="318">سبک فلیپ فرالیک</option>
+<option value="-318">سبک فلیپ فرالیک *</option>
+<option value="36">سبکتکین سالور</option>
+<option value="-36">سبکتکین سالور *</option>
+<option value="307">سپنتا حسابی</option>
+<option value="221">سپهر سالور</option>
+<option value="229">سپیده برومند</option>
+<option value="263">سپیده بهروزی</option>
+<option value="-263">سپیده بهروزی *</option>
+<option value="133">سپیده سالور</option>
+<option value="-133">سپیده سالور *</option>
+<option value="208">ستاره سالور</option>
+<option value="210">سحر برومند</option>
+<option value="266">سحر حجة الاسلام قمی</option>
+<option value="-266">سحر حجة الاسلام قمی *</option>
+<option value="174">سحر سالور</option>
+<option value="-174">سحر سالور *</option>
+<option value="10002901">سرای ملک گنجه ای</option>
+<option value="241">سعید برومند</option>
+<option value="104">سلطان حسین سالور</option>
+<option value="-104">سلطان حسین سالور *</option>
+<option value="111">سلطان علی سالور</option>
+<option value="10002803">سلطان محمد اردلان</option>
+<option value="1000400">سلطان محمود سالور</option>
+<option value="22">سلطان مسعود سالور</option>
+<option value="23">سلطان یوسف سالور</option>
+<option value="10001611">سلیمان سالور</option>
+<option value="10003405">سلین سالور</option>
+<option value="317">سلین شکرچیان</option>
+<option value="258">سمیرا سالور</option>
+<option value="150">سنجر سالور</option>
+<option value="-150">سنجر سالور *</option>
+<option value="265">سهراب سالور</option>
+<option value="314">سهند سالور</option>
+<option value="46">سودابه گنجه ای</option>
+<option value="100011008">سوزان اعتضادی</option>
+<option value="236">سوزان گنجه ای</option>
+<option value="144">سوفی سیادت</option>
+<option value="10003406">سیدنی سالور</option>
+<option value="10003701">سینا ریحانی</option>
+<option value="287">شادی حشمتی</option>
+<option value="10004005">شادی سالور</option>
+<option value="303">شارلت غفوری</option>
+<option value="299">شارلین غفوری</option>
+<option value="260">شارمین شکرچیان</option>
+<option value="10004001">شاه محمد سالور</option>
+<option value="84">شاهرخ سالور</option>
+<option value="172">شاهرخ فرخ ابراهیمی</option>
+<option value="1000390">شاهزاده صمصامی بتول</option>
+<option value="100040">شاهقلی خان قاجار قوانلو</option>
+<option value="74">شایسته درمشیان یاسمی</option>
+<option value="257">شراره خدابخش</option>
+<option value="242">شروین شکرچیان</option>
+<option value="10004006">شعر سالور</option>
+<option value="10004714">شهرداد سالور</option>
+<option value="100">شهرزاد سالور</option>
+<option value="1000460">شهرزاد کوزه کنانی</option>
+<option value="10004716">شهره سالور</option>
+<option value="113">شهریار کوزه کنانی</option>
+<option value="253">شیدا ربیع زاده</option>
+<option value="100010001">شیرین</option>
+<option value="10003202">شیرین اردلان</option>
+<option value="-10003202">شیرین اردلان *</option>
+<option value="239">شیرین روشن سالور</option>
+<option value="10004004">شیرین سالور</option>
+<option value="10007001">صدف اسفندیاری</option>
+<option value="44">صلاح الدین سالور</option>
+<option value="250">صنم سالور</option>
+<option value="10004012">عباس</option>
+<option value="21">عباس سالور</option>
+<option value="10001612">عباس سالور</option>
+<option value="10004718">عباس سالور</option>
+<option value="10001624">عباس قلی اردلان</option>
+<option value="1000112">عباس میرزا ملک آرا</option>
+<option value="100090">عباس میرزا نایب السلطنه</option>
+<option value="2">عباسه حاج والیه سالور</option>
+<option value="86">عباسه سالور</option>
+<option value="-86">عباسه سالور *</option>
+<option value="60">عبدالحمید میرزا حسابی</option>
+<option value="10003201">عبدالصمد اردلان</option>
+<option value="-10003201">عبدالصمد اردلان *</option>
+<option value="1000440">عبدالصمد سالور</option>
+<option value="1000110">عبدالصمد میرزا عزالدوله</option>
+<option value="10001652">عبدالعلی خواجه نوری</option>
+<option value="13">عبدالله میرزا سالور</option>
+<option value="10001632">عبدالوهاب بدر</option>
+<option value="10001635">عذرا بدر</option>
+<option value="26">عزالدین کاظمی</option>
+<option value="10001626">عزالملوک اردلان</option>
+<option value="1000370">عزت ملک</option>
+<option value="10001616">عزیزالسلطنه سالور</option>
+<option value="1000165">عزیزه شاهزاده افخم الملک</option>
+<option value="1000167">عطاءالله</option>
+<option value="73">عطاءالله سالور</option>
+<option value="10001648">عفت امیرشاهی</option>
+<option value="1000380">عفت ملک</option>
+<option value="10001614">علی الدین سالور</option>
+<option value="10001643">علی اکبر امیرشاهی</option>
+<option value="206">علی حسابی</option>
+<option value="219">علی رحیمی دانش</option>
+<option value="264">علی عبدالرسول</option>
+<option value="195">علی غفوری</option>
+<option value="10001625">علی قلی اردلان</option>
+<option value="10004011">علی نقی سالور</option>
+<option value="202">علیرضا سالور</option>
+<option value="97">فاطمه سالور</option>
+<option value="181">فتانه فرخ ابراهیمی</option>
+<option value="100050">فتحعلی خان قاجار</option>
+<option value="100080">فتحعلی شاه</option>
+<option value="100011003">فخرالملوک اعتضادی</option>
+<option value="100046">فراز پرتوی</option>
+<option value="10001671">فرانک سالور</option>
+<option value="-10001671">فرانک سالور *</option>
+<option value="1000180">فرخ</option>
+<option value="146">فرخ اردلان</option>
+<option value="-2146">فرخ اردلان*</option>
+<option value="-146">فرخ اردلان *</option>
+<option value="108">فرخ سالور</option>
+<option value="79">فرزاد دادجو</option>
+<option value="68">فرشته سالور</option>
+<option value="33">فرشته کاظمی</option>
+<option value="196">فرناز حسابی</option>
+<option value="251">فرهاد سالور</option>
+<option value="324">فرهاد گنجه ای</option>
+<option value="24">فرود سالور</option>
+<option value="10002802">فروغ الملوک اردلان</option>
+<option value="120">فریدون باختر</option>
+<option value="136">فریدون سالور</option>
+<option value="100011005">فریدون شاهین‌نوری</option>
+<option value="1000140">فریدون میرزا افخم الدوله</option>
+<option value="1000450">فیروز سالور</option>
+<option value="205">فیروزه غفوری</option>
+<option value="157">فیروزه فرخ ابراهیمی</option>
+<option value="197">فیروزه گرانمایه</option>
+<option value="10001645">قمرالملوک امیرشاهی</option>
+<option value="127">قهرمان سالور</option>
+<option value="5">قهرمان میرزا عین السلطنه</option>
+<option value="269">گلنوش حشمتی</option>
+<option value="10004010">گلنوش زواره ای</option>
+<option value="159">گلی گنجه ای</option>
+<option value="61">گیتی فریده صمصامی محاجر</option>
+<option value="132">لادن یاسمی برادران جوادی</option>
+<option value="48">لعبت شیرین میرزا حسابی</option>
+<option value="10004013">لوییز شاهین</option>
+<option value="315">لیام حسابی</option>
+<option value="100011002">لیلا اعتضادی</option>
+<option value="1000351">لیلا حجت الاسلام قمی</option>
+<option value="-1000351">لیلا حجت الاسلام قمی *</option>
+<option value="-2284">لیلی اردلان*</option>
+<option value="284">لیلی اردلان</option>
+<option value="-284">لیلی اردلان *</option>
+<option value="261">لیلی شیرازی بیتز</option>
+<option value="10004014">لینا فارینا</option>
+<option value="316">لیو حسابی</option>
+<option value="293">مارتن جهان بروتی</option>
+<option value="10002703">مارک سالور</option>
+<option value="306">مانلی سالور</option>
+<option value="75">ماهرو جهانسوز برنز</option>
+<option value="1000164">ماهوش نواب عالیه</option>
+<option value="34">محمد باختر</option>
+<option value="10001633">محمد بدر</option>
+<option value="118">محمد سالور</option>
+<option value="10001642">محمد علی امیرشاهی</option>
+<option value="100010">محمد قلی خان قاجار قوانلو</option>
+<option value="100030">محمد ولی خان قاجار قوانلو</option>
+<option value="1000113">محمدتقی میرزا رکن الدوله</option>
+<option value="100060">محمدحسن خان قاجار</option>
+<option value="10001601">محمدحسین حسابی</option>
+<option value="1000100">محمدشاه</option>
+<option value="10001631">محمود بدر</option>
+<option value="186">محمود گرانمایه</option>
+<option value="161">محمود کاظمی</option>
+<option value="16">مدیحه سالور</option>
+<option value="190">مریم اردلان</option>
+<option value="-190">مریم اردلان *</option>
+<option value="10001627">مریم اردلان</option>
+<option value="114">مریم باختر</option>
+<option value="228">مریم رحیمی دانش</option>
+<option value="130">مریم سالور</option>
+<option value="-130">مریم سالور *</option>
+<option value="10003402">مریم سالور</option>
+<option value="151">مزدا سالور</option>
+<option value="100011004">مسعود شاهین‌نوری</option>
+<option value="302">مسیحا حسابی</option>
+<option value="10003901">مصطفی صمصامی مهاجر</option>
+<option value="10004723">معزالدین سالور</option>
+<option value="1000160">معصومه شاهزاده آقا</option>
+<option value="10001653">ملک تاج خواجه نوری</option>
+<option value="18">ملک قاسم سالور</option>
+<option value="100011001">ملک منصور اعتضادی</option>
+<option value="14">ملکه سالور</option>
+<option value="20">منوچهر سالور</option>
+<option value="100020">مهدی خان قاجار قوانلو</option>
+<option value="215">مهدی سالور</option>
+<option value="57">مهرداد سالور</option>
+<option value="175">مهرداد سالور</option>
+<option value="10004715">مهرزاد سالور</option>
+<option value="10001646">مهرماه امیرشاهی</option>
+<option value="252">مهسا سالور</option>
+<option value="71">مهوش امیرشاهی</option>
+<option value="121">مهوش سالور</option>
+<option value="1000471">میرمنوچهر سیادت</option>
+<option value="7">مینو ارفع السلطنه سالور</option>
+<option value="88">مینو سالور</option>
+<option value="10004401">نادر سالور</option>
+<option value="49">نازتاب سالور</option>
+<option value="-49">نازتاب سالور *</option>
+<option value="10001623">ناصر قلی اردلان</option>
+<option value="1000111">ناصرالدین شاه</option>
+<option value="29">ناصرالدین گنجه ای</option>
+<option value="10008000">ناصره اردلان</option>
+<option value="10004707">ناکهه (خدیجه) کاظمی صاحب جم</option>
+<option value="100010000">ندا ربوبی</option>
+<option value="259">نرگس اقدایی</option>
+<option value="-259">نرگس اقدایی *</option>
+<option value="9">نزهت الملوک سالور</option>
+<option value="10004712">نصرالدین سالور</option>
+<option value="10002801">نصرت الله اردلان</option>
+<option value="1000161">نفیسه شاهزاده خانم</option>
+<option value="93">نفیسه میرزا حسابی</option>
+<option value="289">نگین سالور</option>
+<option value="240">نوشین سالور</option>
+<option value="10004009">نوشین سالور</option>
+<option value="100011000">نویان برومند</option>
+<option value="231">نیلوفر سالور</option>
+<option value="-231">نیلوفر سالور *</option>
+<option value="249">نیما امیدی</option>
+<option value="-249">نیما امیدی *</option>
+<option value="-2291">نینا اردلان*</option>
+<option value="291">نینا اردلان</option>
+<option value="-291">نینا اردلان *</option>
+<option value="222">نیناز سالور</option>
+<option value="277">نیکی عضدی</option>
+<option value="311">نیکی ملو</option>
+<option value="10004003">هرمز سالور</option>
+<option value="1000410">هرمز سالور</option>
+<option value="209">هرمز سپهری قشقایی</option>
+<option value="-209">هرمز سپهری قشقایی *</option>
+<option value="10004900">هرمز کورت معتمدی</option>
+<option value="169">هلال کمره ای</option>
+<option value="-169">هلال کمره ای *</option>
+<option value="10003602">هلن باختر</option>
+<option value="152">همایون سالور</option>
+<option value="153">هوری گنجه ای</option>
+<option value="100011006">هوشنگ اعتضادی</option>
+<option value="10001628">والی اعظم اردلان</option>
+<option value="10004306">ونداد سالور</option>
+<option value="10002403">ونسا سالور</option>
+<option value="200">کامران اردلان</option>
+<option value="-200">کامران اردلان *</option>
+<option value="10002701">کامران سالور</option>
+<option value="10003404">کامران سالور</option>
+<option value="255">کامران شیرازی</option>
+<option value="-2272">کامران علوی*</option>
+<option value="272">کامران علوی</option>
+<option value="-272">کامران علوی *</option>
+<option value="290">کامران وثیق</option>
+<option value="138">کامیار کوزه کنانی</option>
+<option value="168">کتایون کوزه کنانی</option>
+<option value="145">کسری سالور</option>
+<option value="296">کورش کمره ای</option>
+<option value="-296">کورش کمره ای *</option>
+<option value="82">کوروش کورت معتمدی</option>
+<option value="-2276">کیان اردلان علوی*</option>
+<option value="276">کیان اردلان علوی</option>
+<option value="-276">کیان اردلان علوی *</option>
+<option value="282">کیان استن بولت</option>
+<option value="177">کیان سالور</option>
+<option value="320">کیان سالور</option>
+<option value="310">کیان کمره ای</option>
+<option value="-310">کیان کمره ای *</option>
+<option value="50">کیومرث سالور</option>
+<option value="166">یاسمن رصدی</option>
+<option value="273">یاسمین عضدی</option>
+<option value="188">یاسمین کاترین بوکه</option>
+<option value="28">یحیی باختر</option>
+      </datalist>
+      <div id="myDiagramDiv" style="background-color: #888888; border: solid 1px black; height: 80vh"></div>
+   </body>
+</html>
+{% else %}
+<p>You are not logged in</p>
+<a href="{% url 'login' %}">Log In</a>
+{% endif %}
+{% endblock %}

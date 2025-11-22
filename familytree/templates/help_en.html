@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block title %}Help{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+
+<html>
+<head>
+<meta charset="utf-8"/>
+<!-- Copyright 1998-2021 by Northwoods Software Corporation. -->
+<title>Help</title>
+</head>
+<body style="background-color:gray; color:white; font-family:tahoma; font-size:22px">
+<div align="left"  ><b></b>
+  <span class="tooltiptext" dir="ltr">
+  While consulting the present file, first of all please note that due to the width of the pages, the information is displayed better on a laptop or desktop than on a mobile phone.
+  <br/><br/>
+On a laptop or desktop, in addition to scrolling the screen, you can move around the screen by holding down the mouse click and moving the mouse. You can also zoom in with the + and - buttons after clicking in the middle of the page 
+  <br/><br/>
+When using the mobile phone, you can also move the screen by moving your finger on the gray area, and you can zoom in and out by moving your fingers closer and closer to each other. 
+  <br/><br/>
+  <p style="color:#F48FB1">
+  Names marked in pink: A Lady’s name entered from the data entry form. 
+  </p>
+  <p style="color:#90CAF9">
+Names marked in blue: A Man’s name entered from the data entry form. 
+  </p>
+
+  <p style="color:#FFBC79">
+Names marked in orange: A lady’s name imported from the previous family tree files or oral conversations and other sources.. 
+  </p>
+  <p style="color:#CEF8F8">
+Names marked in pale blue: A man’s name imported from the previous family tree files, oral conversations and other confirmed sources. 
+  </p>
+
+
+The asterisk (*) next to some names means that the person's name is registered at least once in the list of people and in addition in the current branch is also connected to this family by the mother or one of the mothers of the older generations.
+  <br/><br/>
+You can use three versions: Persian, English and Expandable. In the Expandable version it is not possible to search, instead you can click in the middle of each node and see the lower generation
+  <br/><br/>
+The numbers that appear in the search section of people and next to their names are not significant numbers based on the characteristics of people and are used only in software. These numbers also change after new people are added. 
+</span>
+</div>
+</body>
+</html>
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">Log In</a>
+{% endif %}
+{% endblock %}

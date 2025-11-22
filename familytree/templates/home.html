@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<p>Welcome {{ user.username }}!</p>
+<p><a href="{% url 'tree_fa' %}">Family Tree (Fa)</a></p>
+<p><a href="{% url 'tree_en' %}">Family Tree (En)</a></p>
+<p><a href="{% url 'tree_exp' %}">Family Tree (Fa - Expandable)</a></p>
+{% else %}
+<meta http-equiv="REFRESH" content="0;url=/familytree/login">
+  {% endif %}
+{% endblock %}

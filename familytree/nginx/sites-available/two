@@ -1,0 +1,23 @@
+server {
+        listen 80;
+        listen [::]:80;
+
+        # SSL configuration
+        #
+        listen 443 ssl;
+        listen [::]:443 ssl;
+        ssl_certificate /etc/letsencrypt/live/ezzedoleh.com/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/ezzedoleh.com/privkey.pem;
+
+        server_name ezzedoleh.com;
+
+        location / {
+                # First attempt to serve request as file, then
+                # as directory, then fall back to displaying a 404.
+                #try_files $uri $uri/ =404;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header Host $http_host;
+                proxy_redirect off;
+                proxy_pass http://64.23.160.242:8000;
+        }
+}
